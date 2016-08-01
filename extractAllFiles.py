@@ -35,7 +35,12 @@ parts taken from example in https://github.com/py4n6/pytsk/blob/master/examples/
 The directory is a TSK_FS_DIR struct that has: addr, names, fs_file (pointer to the file structure), fs_info (pointer to the file system the dir is in)
 The file is a TSK_FS_FILE struct that has: meta (contains size, type, addr, atime, ctime, crtime etc.), name, fs_info (pointer to the file system the file is in)
 '''
-def extraction(directory, pPath):
+def extraction(directory, pPath, pPathName):
+    ''' Uses recursion to find every file and directory in the image and stores the important ones
+        directory      - The directory to look in
+        pPath          - Store the path address
+        pPathName      - Store the path name
+    '''
     address = directory.info.addr
     pPath.append(address)
         
@@ -54,6 +59,9 @@ def extraction(directory, pPath):
             #print 'Error!Unable to retrieve the file type of ', fname
             continue
          
+        # Try to store the full filepath by joining the parentPath and the filename
+	outputPath ='./%s' % ('/'.join(pPathName))
+	        
         '''   
         find out if the file is a directory
         pytsk3.TSK_FS_META_TYPE_REG  - Regular file
@@ -63,17 +71,19 @@ def extraction(directory, pPath):
             #found a directory, find all files in it
             subdirectory = f.as_directory()
             inode = subdirectory.info.addr
+            pPathName.append(fname)
                      
       
             if inode not in pPath:
-                extraction(subdirectory, pPath)
+                extraction(subdirectory, pPath, pPathName)
+                pPathName.pop(-1)
 
         '''
         Process file 
         '''
         if fType == pytsk3.TSK_FS_META_TYPE_REG:
             #print 'Defenitely a file: ', fname
-            
+                    
             #Extract File Information
             if fname == '$MFT':
                 print '    Found Master File Table...Starting extraction process'
@@ -83,36 +93,36 @@ def extraction(directory, pPath):
                 outfile.close()
                 
             #Extract Windows Registry Information
-            elif fname == 'SAM':
-                print '    Found SAM Hive...Starting extraction process'
+            elif (fname == 'SAM' or fname == 'sam') and outputPath.endswith('config'):
+                print '    Found SAM Hive in %s...Starting extraction process' % (outputPath)
                 outfile = open('files/SAM', 'w')
                 filedata = f.read_random(0, f.info.meta.size)
                 outfile.write(filedata)
                 outfile.close()
                 
-            elif fname == 'SECURITY':
-                print '    Found SECURITY Hive...Starting extraction process'
+            elif (fname == 'SECURITY' or fname == 'security') and outputPath.endswith('config'):
+                print '    Found SECURITY Hive in %s...Starting extraction process' % (outputPath)
                 outfile = open('files/SECURITY', 'w')
                 filedata = f.read_random(0, f.info.meta.size)
                 outfile.write(filedata)
                 outfile.close()
                 
-            elif fname == 'SYSTEM':
-                print '    Found SYSTEM Hive...Starting extraction process'
+            elif (fname == 'SYSTEM' or fname == 'system') and outputPath.endswith('config'):
+                print '    Found SYSTEM Hive in %s...Starting extraction process' % (outputPath)
                 outfile = open('files/SYSTEM', 'w')
                 filedata = f.read_random(0, f.info.meta.size)
                 outfile.write(filedata)
                 outfile.close()
                 
-            elif fname == 'SOFTWARE':
-                print '    Found SOFTWARE Hive...Starting extraction process'
+            elif (fname == 'SOFTWARE' or fname == 'software') and outputPath.endswith('config'):
+                print '    Found SOFTWARE Hive in %s...Starting extraction process' % (outputPath)
                 outfile = open('files/SOFTWARE', 'w')
                 filedata = f.read_random(0, f.info.meta.size)
                 outfile.write(filedata)
                 outfile.close()
                 
-            elif fname == 'NTUSER.DAT':
-                print '    Found NTUSER.DAT...Starting extraction process'
+            elif fname == 'NTUSER.DAT' and ('LocalService' not in outputPath) and ('NetworkService' not in outputPath):
+                print '    Found NTUSER.DAT in %s ...Starting extraction process' % (outputPath)
                 #Create a new folder and store NTUSER.DAT there
                 global counter
                 filename = 'NTUSER' + str(counter) + '.DAT'
@@ -154,16 +164,18 @@ def parseImage(diskPath):
             directory = fileSystemObject.open_dir(path = '/')
         
             #find all the files of the system
-            extraction(directory, [])
+            extraction(directory, [], [])
 
     ewf_handle.close()
     
 
 def main(): 
         
-    diskPath = '/Volumes/Elements/York MSc Cyber Security (CYB)/FACI Exercises/Exercises/Forensic_1/Forensic_workshop_1.EO1'
+    #diskPath = '/Volumes/Elements/York MSc Cyber Security (CYB)/FACI Exercises/Exercises/Forensic_1/Forensic_workshop_1.EO1'
     #diskPath = '/Volumes/Elements/York MSc Cyber Security (CYB)/FACI Exercises/Exercises/Assessment/Image/Money-transfer.EO1'
-    
+    diskPath = '/Users/anastasioskoutlis/Developer/York MSc Cyber Security (CYB)/Cyber Security Individual Project (PCYB) /Scenarios/1/nps-2008-jean.E01'
+    #diskPath = '/Users/anastasioskoutlis/Developer/York MSc Cyber Security (CYB)/Cyber Security Individual Project (PCYB)/Scenarios/3/Internet_Foreniscs_IE10_image.ad1'
+
     #Print partion information for every partition of the image given
     parseImage(diskPath)
 

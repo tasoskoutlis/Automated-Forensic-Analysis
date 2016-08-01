@@ -17,12 +17,12 @@ import time, binascii
 import os
 
 #Create an empty file every time the program runs
-f = open('forcsv/preliminary.csv', 'w')
+f = open('sccsv/preliminary.csv', 'w')
 f.close()
 
 #Store information to csv
 def writeToCSV(value):
-    f = open('forcsv/preliminary.csv', 'a')
+    f = open('sccsv/preliminary.csv', 'a')
     for row in value:
         f.write('%s;' % row)
     f.write('\n')
@@ -78,11 +78,11 @@ def systemInfo():
     #os.system('python regparse.py --plugin sysinfo --hives files/SYSTEM files/SOFTWARE --format "{{ last_write }}|{{ os_info }}|{{ installed_date }}|{{ registered_owner }}" > csv/sysinfo.csv')
     
     try: 
-        os.system('python regparse.py --plugin services --hives files/SYSTEM --format "{{ last_write }}|{{ key_name }}|{{ image_path }}|{{ type_name }}|{{ display_name }}|{{ start_type }}|{{ service_dll }}" > forcsv/services.csv')
+        os.system('python regparse.py --plugin services --hives files/SYSTEM --format "{{ last_write }}|{{ key_name }}|{{ image_path }}|{{ type_name }}|{{ display_name }}|{{ start_type }}|{{ service_dll }}" > sccsv/services.csv')
     except:
         print 'Services list not found'
     try: 
-        os.system('python regparse.py --plugin usbstor --hives files/SYSTEM --format "{{ last_write }}|{{ sub_key }}|{{ runcount }}|{{ windate }}|{{ data }}" > forcsv/usb.csv')
+        os.system('python regparse.py --plugin usbstor --hives files/SYSTEM --format "{{ last_write }}|{{ sub_key }}|{{ runcount }}|{{ windate }}|{{ data }}" > sccsv/usb.csv')
     except:
         print 'Usb list not found'
 
@@ -121,17 +121,23 @@ def softwareInfo():
             valArray = [value.name(), value.value()]
             writeToCSV(valArray)
     
-    key = r.open("Microsoft\\Windows\\CurrentVersion\\WindowsBackup")
-    for value in key.values():
+    try:
+        key = r.open("Microsoft\\Windows\\CurrentVersion\\WindowsBackup")
+        for value in key.values():
+                #Store to csv
+                valArray = [value.name(), value.value()]
+                writeToCSV(valArray)
+        if not key.values():
+            value = 'No backup found.'
             #Store to csv
-            valArray = [value.name(), value.value()]
+            valArray = [value]
             writeToCSV(valArray)
-    if not key.values():
-        value = 'No backup found.'
+    except:
+        value = 'No backup entry'
         #Store to csv
         valArray = [value]
         writeToCSV(valArray)
-    
+        
     #Store to csv
     valArray = []
     writeToCSV(valArray)
@@ -191,32 +197,32 @@ Extract All User Information
 '''
 def extractNTUSERInfo(users):
     
-    for n in range(0, users + 1):
+    for n in range(1, users + 1):
         
         try: 
-            os.system('python regparse.py --plugin userassist --hives files/NTUSER' + str(n) + '.DAT --format "{{ last_write }}|{{ sub_key }}|{{ runcount }}|{{ windate }}|{{ data }}" > forcsv/userassist' + str(n) + '.csv')
+            os.system('python regparse.py --plugin userassist --hives files/NTUSER' + str(n) + '.DAT --format "{{ last_write }}|{{ sub_key }}|{{ runcount }}|{{ windate }}|{{ data }}" > sccsv/userassist' + str(n) + '.csv')
         except:
             print 'No UserAssist information for NTUSER' + str(n) + '.DAT'
 
         try: 
-            os.system('python regparse.py --plugin runmru --hives files/NTUSER' + str(n) + '.DAT --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > forcsv/mru' + str(n) + '.csv')
+            os.system('python regparse.py --plugin runmru --hives files/NTUSER' + str(n) + '.DAT --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > sccsv/mru' + str(n) + '.csv')
         except:
             print 'No RunMRU information for NTUSER' + str(n) + '.DAT'
  
         try: 
-            os.system('python regparse.py --plugin recentdocs --hives files/NTUSER' + str(n) + '.DAT --format "{{last_write}}|{{key_name}}|{{key}}|{{value}}|{{data}}" > forcsv/recent' + str(n) + '.csv')
+            os.system('python regparse.py --plugin recentdocs --hives files/NTUSER' + str(n) + '.DAT --format "{{last_write}}|{{key_name}}|{{key}}|{{value}}|{{data}}" > sccsv/recent' + str(n) + '.csv')
         except:
             print 'No RecentDocs information for NTUSER' + str(n) + '.DAT'
             
         try: 
-            os.system('python regparse.py --plugin lastvisitedmru --hives files/NTUSER' + str(n) + '.DAT --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > forcsv/lastvisitedmru' + str(n) + '.csv')
+            os.system('python regparse.py --plugin lastvisitedmru --hives files/NTUSER' + str(n) + '.DAT --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > sccsv/lastvisitedmru' + str(n) + '.csv')
         except:
             print 'No LastVisitedMRU information for NTUSER' + str(n) + '.DAT'
 
 
 def main(): 
     
-    users = 0
+    users = 4
  
     systemInfo()
     softwareInfo()
