@@ -42,9 +42,12 @@ def mft(f):
                 
     return eventArray
 
-    
-def main():
-    
+
+def parsers():
+    ''' Reads mft.csv file and extracts info to an array each row represents information about a file
+        f               - file
+        @eventArray     - return array with results
+    '''    
     #Read information from MFT
     f = open('forcsv/mft.csv', 'rb')
     mftArray = mft(f)
@@ -59,6 +62,13 @@ def main():
     f = open('forcsv/recent0.csv', 'rb')
     recents = registryInfo(f)
     f.close()
+
+    return mftArray, userAssist, recents
+ 
+    
+def main():
+    
+    mftArray, userAssist, recents = parsers()
     
     #Search the Recycle Bin entries for information
     recycleBin = ruleSearchRecycleBin.searchRecycleBin(mftArray)
