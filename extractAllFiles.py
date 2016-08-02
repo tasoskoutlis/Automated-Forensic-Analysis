@@ -9,6 +9,7 @@ https://github.com/py4n6/pytsk/wiki - Listing all files in a directory
 import sys, time, os, re
 import pytsk3
 import pyewf
+import extractSystemInfo
 
 counter = 1
 
@@ -123,17 +124,17 @@ def extraction(directory, pPath, pPathName):
                 
             elif fname == 'NTUSER.DAT' and ('LocalService' not in outputPath) and ('NetworkService' not in outputPath):
                 print '    Found NTUSER.DAT in %s ...Starting extraction process' % (outputPath)
-                #Create a new folder and store NTUSER.DAT there
-                global counter
-                filename = 'NTUSER' + str(counter) + '.DAT'
-                outfile = open('files/'+ filename, 'w')
-                counter += 1
+                
+                #Store file
+                outfile = open('files/NTUSER.DAT', 'w')
                 filedata = f.read_random(0, f.info.meta.size)
                 outfile.write(filedata)
-                outfile.close()    
+                outfile.close() 
                 
-            #To be continued..
-    
+                #Extract NTUSER.DAT information to .csv files, immediately because we might have more than one users
+                substr = outputPath[outputPath.rfind('/')+1:]
+                extractSystemInfo.extractNTUSERInfo(substr)
+                    
     pPath.pop(-1)
 
 
@@ -171,13 +172,23 @@ def parseImage(diskPath):
 
 def main(): 
         
-    #diskPath = '/Volumes/Elements/York MSc Cyber Security (CYB)/FACI Exercises/Exercises/Forensic_1/Forensic_workshop_1.EO1'
+    diskPath = '/Volumes/Elements/York MSc Cyber Security (CYB)/FACI Exercises/Exercises/Forensic_1/Forensic_workshop_1.EO1'
     #diskPath = '/Volumes/Elements/York MSc Cyber Security (CYB)/FACI Exercises/Exercises/Assessment/Image/Money-transfer.EO1'
-    diskPath = '/Users/anastasioskoutlis/Developer/York MSc Cyber Security (CYB)/Cyber Security Individual Project (PCYB) /Scenarios/1/nps-2008-jean.E01'
+    #diskPath = '/Users/anastasioskoutlis/Developer/York MSc Cyber Security (CYB)/Cyber Security Individual Project (PCYB) /Scenarios/1/nps-2008-jean.E01'
     #diskPath = '/Users/anastasioskoutlis/Developer/York MSc Cyber Security (CYB)/Cyber Security Individual Project (PCYB)/Scenarios/3/Internet_Foreniscs_IE10_image.ad1'
 
     #Print partion information for every partition of the image given
     parseImage(diskPath)
+    
+    #Extract MFT information to .csv
+    print 'Extracting MFT information to csv...'
+    os.system('analyzeMFT.py -f forfiles/MFT -o forcsv/mft.csv')
+
+    #Extract Registry information to .csv
+    print 'Extracting Registry information to csv...'
+    extractSystemInfo.systemInfo()
+    extractSystemInfo.softwareInfo()
+    extractSystemInfo.deviceInfo()
 
 
 if __name__ == "__main__":

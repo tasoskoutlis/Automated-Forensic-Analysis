@@ -88,11 +88,11 @@ def searchFile(name, mftArray, userAssist, recents):
             results.append([]) 
             filename = mftArray[i][7]          
             for j in range(8,12):
-                #format is ['path str_time, timestamp,...] - [text.txt Std Info Access Date, 2015-01-02 22:49:35.829651]
+                #format is [path str_time, timestamp,...] - [text.txt Std Info Access Date, 2015-01-02 22:49:35.829651]
                 results[cnt].append(filename + ' ' + mftArray[0][j])
                 results[cnt].append(mftArray[i][j])
             cnt += 1
-            
+
     #print 'Moving to Checking All'
     
     size = len(results)
