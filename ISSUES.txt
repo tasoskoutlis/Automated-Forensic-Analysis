@@ -1,0 +1,43 @@
+RULES
+
+1. Is the 5 minute option correct when comparing the time a file was created with the time a program was used? - time bracket
+
+	1. Look into the user time session and give this as time bracket
+	2. Identify file signatures and tools that open them and try to remove those programs that do not match
+
+2. Steps
+	1. Parse the disk image, extract important files and parse those files to a .csv
+	2. Run rules.py and provide the rules to use and the paths of the files
+
+3. 
+
+
+TO DO - RULES
+
+1. Rule 1 runs for all 3 test cases
+
+2. search user information plus time frame
+
+Provide the investigator with what a user did in a system. Give him all user assist info and the all recent ordered.
+He can then chose to investigate a file and search with the other rule.
+
+
+	1. Provide a user info
+		1. Give user assist, recent etc first — print that info
+			1. Can you find the real timestamp of every file in the RecentDocs?????
+			2. RecentDocs — OK
+			3. UserAssist — OK
+		2. Then go to MFT and try to find info about the info found in step 1
+		3. If step 2 is not necessary, you have to take times from step 1 and try to find files in MFT
+
+	2. Provide a time frame or leave empty and it will search everything
+
+3. search time frame
+	1. For every user in the system we must find out what happened in a specific time frame
+	2. Info will be different in every user so I will do it separately for every user (SO Do Step 2 above)
+
+4. Print info - connections for every file
+	1. It will probably be a mess, though think if there is a possibility of that happening
+
+
+5. Add restrictions to reduce false positives (see RULES 1. above)

@@ -35,7 +35,7 @@ def mft(f):
         #print row
         eventArray.append(row.split(','))
         
-    #Minor bug that had to be removed..items stored in '"example"', so "" had to be removed
+    #Minor bug that had to be removed..items stored as "example", so "" had to be removed
     for i in xrange(len(eventArray)):
         for j in xrange(len(eventArray[i])):
             eventArray[i][j] = (eventArray[i][j])[1:-1]
@@ -49,39 +49,49 @@ def parsers(userAssistFilename, recentFilename):
         @eventArray     - return array with results
     '''    
     #Read information from MFT
-    f = open('assmcsv/mft.csv', 'rb')
+    f = open('forcsv/mft.csv', 'rb')
     mftArray = mft(f)
     f.close()
     
     #Read information from User Assist
-    f = open('assmcsv/userassist1.csv', 'rb')
+    f = open('forcsv/userassist_student.csv', 'rb')
     userAssist = registryInfo(f)
     f.close()
+    
+    #Do some sanitization
+    for i in xrange(len(userAssist)):
+        userAssist[i][4] = userAssist[i][4].rstrip('\n')
         
     #Read information from Recent
-    f = open('assmcsv/recent1.csv', 'rb')
+    f = open('forcsv/recent_student.csv', 'rb')
     recents = registryInfo(f)
     f.close()
     
+    #Do some sanitization
+    for i in xrange(len(recents)):
+        recents[i][4] = recents[i][4].rstrip('\n')
+        #From '\x00a\x00n\x00d\x00' we have 'and ' 
+        recents[i][4] = recents[i][4].replace('\x00', '')
+
     return mftArray, userAssist, recents
  
     
 def main():
      
-    userAssistFilename, recentFilename = 0, 1#readChoice.options()
+    userAssistFilename, recentFilename = 0, 1 #readChoice.options()
     
     mftArray, userAssist, recents = parsers(userAssistFilename, recentFilename)
     
     #Search the Recycle Bin entries for information
     recycleBin = ruleSearchRecycleBin.searchRecycleBin(mftArray)
     
-    print recycleBin
+    #print recycleBin
     print
     
-    name = 'holiday' #change it to Rec...rtf
+    name = 'RecycleTestDocument.rtf' 
     
     #Rule 1 - Search everything to find information about a specific file
-    ruleSearchFile.searchFile(name, mftArray, userAssist, recents)
+    #ruleSearchFile.searchFile(name, mftArray, userAssist, recents)
     
     #Rule 2 - Everything that occurred in a given time frame
     ruleSearchTimeFrame.searchTimeFrame(name, mftArray, userAssist, recents)

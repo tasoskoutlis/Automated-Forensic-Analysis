@@ -59,7 +59,7 @@ def event(results):
                     minV = [t2, i, 1]
 
         #A few of the entries (Registry) store a newline at the end so I remove it
-        eventArray.append(results[minV[1]][minV[2]-1].rstrip('\n'))
+        eventArray.append(results[minV[1]][minV[2]-1])
         eventArray.append(results[minV[1]][minV[2]])
         
         if len(results[minV[1]]) > 2:            
@@ -98,7 +98,6 @@ def searchFile(name, mftArray, userAssist, recents):
     size = len(results)
     for i in xrange(len(userAssist)):
         timestamp = userAssist[i][3]
-        #for k in xrange(size):
         for j in range(1, 7, 2):
             try:
                 datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S.%f")
