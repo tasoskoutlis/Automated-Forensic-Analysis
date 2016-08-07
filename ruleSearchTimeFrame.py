@@ -61,7 +61,7 @@ def event(results):
     return eventArray
 
 
-def searchTimeFrame(name, mftArray, userAssist, recents):
+def searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents):
     ''' Find every timestamp and info that has to do with the name argument
         name            - The name of the file to search
         mftArray        - The mft array
@@ -75,23 +75,28 @@ def searchTimeFrame(name, mftArray, userAssist, recents):
     for i in xrange(len(userAssist)):
         #It will hit the exception when it finds 1601-01-01 00:00:00
         try:
-                datetime.strptime(userAssist[i][3], "%Y-%m-%d %H:%M:%S.%f")
+                time = datetime.strptime(userAssist[i][3], "%Y-%m-%d %H:%M:%S.%f")
         except:
             continue
-            
-        results.append([]) 
-        #format is [Name, timestamp] - [text.txt, 2015-01-02 22:49:35.829651]
-        #results[cnt].append(userAssist[i][4].rstrip('\n'))
-        filenamePath = userAssist[i][4]
-        #From {7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}\\AccessData\\FTK Imager\\FTK Imager.exe store FTK Imager.exe
-        filename = filenamePath[filenamePath.rfind('\\')+1:]
-        #Store results to array
-        results[cnt].append(filename)
-        results[cnt].append(userAssist[i][3])
-        cnt += 1
+        
+        #Compare times with given timeframe
+        if time.year >= mintime[0] and time.year <= maxtime[0]:
+            if time.month >= mintime[1] and time.month <= maxtime[1]:
+                if time.day >= mintime[2] and time.day <= maxtime[2]:
+                    results.append([]) 
+                    #format is [Name, timestamp] - [text.txt, 2015-01-02 22:49:35.829651]
+                    #results[cnt].append(userAssist[i][4].rstrip('\n'))
+                    filenamePath = userAssist[i][4]
+                    #From {7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}\\AccessData\\FTK Imager\\FTK Imager.exe store FTK Imager.exe
+                    filename = filenamePath[filenamePath.rfind('\\')+1:]
+                    #Store results to array
+                    results[cnt].append(filename)
+                    results[cnt].append(userAssist[i][3])
+                    cnt += 1
 
     print 'Moving to Checking All'
             
     print event(results)
     print
+    
     print sortRecents(recents)

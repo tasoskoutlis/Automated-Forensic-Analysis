@@ -7,7 +7,6 @@ import readChoice
 import ruleSearchFile
 import ruleSearchTimeFrame
 import ruleSearchRecycleBin
-from optparse import OptionParser
 from datetime import datetime
 
 def registryInfo(f):
@@ -92,9 +91,13 @@ def main():
     
     #Rule 1 - Search everything to find information about a specific file
     #ruleSearchFile.searchFile(name, mftArray, userAssist, recents)
+
+    #ask user to provide a specific time frame
+    mintime = [int(1970),int(1), int(1)]
+    maxtime = [int(2200),int(12), int(31)]
     
     #Rule 2 - Everything that occurred in a given time frame
-    ruleSearchTimeFrame.searchTimeFrame(name, mftArray, userAssist, recents)
+    ruleSearchTimeFrame.searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents)
       
 
 if __name__ == "__main__":

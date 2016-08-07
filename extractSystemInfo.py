@@ -173,6 +173,8 @@ def softwareInfo():
         valArray = []
         writeToCSV(valArray)
 
+    #os.system('python regparse.py --plugin winlogon --hives files/SOFTWARE --format "{{last_write}}|{{ key_name }}|{{ value }}|{{ data }}" > forcsv/winlogon.csv')
+
 
 '''
 Extract device Information
