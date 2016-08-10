@@ -200,21 +200,25 @@ def extractNTUSERInfo(name):
         name            - The name of the user
     '''        
     try: 
-        os.system('python regparse.py --plugin userassist --hives files/NTUSER.DAT --format "{{ last_write }}|{{ sub_key }}|{{ runcount }}|{{ windate }}|{{ data }}" > forcsv/userassist' + '_' + name + '.csv')
+        os.system('python regparse.py --plugin userassist --hives files/NTUSER.DAT \
+                                                            --format "{{ last_write }}|{{ sub_key }}|{{ runcount }}|{{ windate }}|{{ data }}" > forcsv/userassist' + '_' + name + '.csv')
     except:
         print 'No UserAssist information for NTUSER.DAT' + name
 
     try: 
-        os.system('python regparse.py --plugin runmru --hives files/NTUSER.DAT --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > forcsv/mru' + '_' + name + '.csv')
+        os.system('python regparse.py --plugin runmru --hives files/NTUSER.DAT \
+                                                            --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > forcsv/mru' + '_' + name + '.csv')
     except:
         print 'No RunMRU information for NTUSER.DAT' + name
 
     try: 
-        os.system('python regparse.py --plugin recentdocs --hives files/NTUSER.DAT --format "{{last_write}}|{{key_name}}|{{key}}|{{value}}|{{data}}" > forcsv/recent' + '_' + name + '.csv')
+        os.system('python regparse.py --plugin recentdocs --hives files/NTUSER.DAT \
+                                                            --format "{{last_write}}|{{key_name}}|{{key}}|{{value}}|{{data}}" > forcsv/recent' + '_' + name + '.csv')
     except:
         print 'No RecentDocs information for NTUSER.DAT' + name
         
     try: 
-        os.system('python regparse.py --plugin lastvisitedmru --hives files/NTUSER.DAT --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > forcsv/lastvisitedmru' + '_' + name + '.csv')
+        os.system('python regparse.py --plugin lastvisitedmru --hives files/NTUSER.DAT \
+                                                            --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > forcsv/lastvisitedmru' + '_' + name + '.csv')
     except:
         print 'No LastVisitedMRU information for NTUSER.DAT' + name

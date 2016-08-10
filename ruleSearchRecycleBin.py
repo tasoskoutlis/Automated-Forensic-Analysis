@@ -6,7 +6,7 @@
 #!/usr/bin/env python
    
 def searchRecycleBin(mftArray):
-    ''' Reads mft.csv file and extracts info to an array each row represents information about a file
+    ''' Reads mft.csv file and extracts info to an array. Each row represents information about a file
         f               - file
         @eventArray     - return array with results
     '''
