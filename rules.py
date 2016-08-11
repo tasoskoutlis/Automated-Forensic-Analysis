@@ -1,6 +1,5 @@
 '''
-
-
+Main Rules script - Read the user's options and run the rules the user chose
 '''
 #!/usr/bin/env python
 import readChoice
@@ -14,11 +13,10 @@ def registryInfo(f):
         f               - file
         @eventArray     - return array with results
     '''
-    eventArray = []
-        
+    eventArray = [] 
     for row in f:
-        eventArray.append(row.split('|'))
-        
+        eventArray.append(row.split('|'))    
+    
     return eventArray
 
 
@@ -27,8 +25,7 @@ def mft(f):
         f               - file
         @eventArray     - return array with results
     '''
-    eventArray = []
-        
+    eventArray = [] 
     #Read information from csv
     for row in f:
         #print row
@@ -38,7 +35,7 @@ def mft(f):
     for i in xrange(len(eventArray)):
         for j in xrange(len(eventArray[i])):
             eventArray[i][j] = (eventArray[i][j])[1:-1]
- 
+    
     return eventArray
 
 
@@ -69,14 +66,14 @@ def parsers(userAssistFilename, recentFilename):
     #Do some sanitization
     for i in xrange(len(recents)):
         recents[i][4] = recents[i][4].rstrip('\n')
-        #From '\x00a\x00n\x00d\x00' we have 'and ' 
+        #From '\x00a\x00n\x00d\x00' we strip all \x00 and as a result we have 'and ' 
         recents[i][4] = recents[i][4].replace('\x00', '')
-
+    
     return mftArray, userAssist, recents
  
     
 def main():
-     
+    
     userAssistFilename, recentFilename = 0, 1 #readChoice.options()
     
     mftArray, userAssist, recents = parsers(userAssistFilename, recentFilename)

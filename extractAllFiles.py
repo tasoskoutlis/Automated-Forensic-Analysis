@@ -9,7 +9,7 @@ https://github.com/py4n6/pytsk/wiki - Listing all files in a directory
 import sys, time, os, re
 import pytsk3
 import pyewf
-import extractSystemInfo
+import analyzeRegistry
 
 counter = 1
 
@@ -133,7 +133,7 @@ def extraction(directory, pPath, pPathName):
                 
                 #Extract NTUSER.DAT information to .csv files, immediately because we might have more than one users
                 substr = outputPath[outputPath.rfind('/')+1:]
-                extractSystemInfo.extractNTUSERInfo(substr)
+                analyzeRegistry.ntuserInfo(substr)
                     
     pPath.pop(-1)
 
@@ -186,10 +186,12 @@ def main():
 
     #Extract Registry information to .csv
     print 'Extracting Registry information to csv...'
-    extractSystemInfo.systemInfo()
-    extractSystemInfo.softwareInfo()
-    extractSystemInfo.deviceInfo()
+    analyzeRegistry.systemInfo()
+    analyzeRegistry.softwareInfo()
+    analyzeRegistry.deviceInfo()
 
+    #Rules
+    
 
 if __name__ == "__main__":
     main()
