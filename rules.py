@@ -74,28 +74,35 @@ def parsers(userAssistFilename, recentFilename):
     
 def main():
     
-    userAssistFilename, recentFilename = 0, 1 #readChoice.options()
+    ruleOptionsArray = []
     
-    mftArray, userAssist, recents = parsers(userAssistFilename, recentFilename)
+    ruleOptionsArray = readChoice.options()
     
-    #Search the Recycle Bin entries for information
-    recycleBin = ruleSearchRecycleBin.searchRecycleBin(mftArray)
-    
-    #print recycleBin
-    print
-    
-    name = 'RecycleTestDocument.rtf' 
+    mftArray, userAssist, recents = parsers(ruleOptionsArray[1], ruleOptionsArray[2])
     
     #Rule 1 - Search everything to find information about a specific file
-    #ruleSearchFile.searchFile(name, mftArray, userAssist, recents)
-
-    #ask user to provide a specific time frame
-    mintime = [int(1970),int(1), int(1)]
-    maxtime = [int(2200),int(12), int(31)]
+    if ruleOptionsArray[0] == 1:
+        
+        ruleSearchFile.searchFile(ruleOptionsArray[5], mftArray, userAssist, recents)
+        
+        #Search the Recycle Bin entries for information
+        #recycleBin = ruleSearchRecycleBin.searchRecycleBin(mftArray)
     
+        #print recycleBin
+            
     #Rule 2 - Everything that occurred in a given time frame
-    ruleSearchTimeFrame.searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents)
-      
+    elif ruleOptionsArray[0] == 2:
+        
+        ruleSearchTimeFrame.searchTimeFrame(ruleOptionsArray[5], ruleOptionsArray[6], mftArray, userAssist, recents)
+    
+    #Rule 3 - Everything that happened in a user's session
+    elif ruleOptionsArray[0] == 3:
+        
+        mintime = [1900, 1, 1]
+        maxtime = [9999, 12, 31]
+        
+        ruleSearchTimeFrame.searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents)
+                  
 
 if __name__ == "__main__":
     main()

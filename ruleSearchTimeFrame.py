@@ -27,10 +27,7 @@ def sortRecents(recents):
             if t2 < t1:
                 t1 = t2
                 minV = [t2, i]
-
-        #A few of the entries (Registry) store a newline at the end so I remove it
-        eventArray.append(results[minV[1]])
-    
+        eventArray.append(results[minV[1]])    
         results.pop(minV[1])
             
     return eventArray 
@@ -85,7 +82,6 @@ def searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents):
                 if time.day >= mintime[2] and time.day <= maxtime[2]:
                     results.append([]) 
                     #format is [Name, timestamp] - [text.txt, 2015-01-02 22:49:35.829651]
-                    #results[cnt].append(userAssist[i][4].rstrip('\n'))
                     filenamePath = userAssist[i][4]
                     #From {7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}\\AccessData\\FTK Imager\\FTK Imager.exe store FTK Imager.exe
                     filename = filenamePath[filenamePath.rfind('\\')+1:]
@@ -93,10 +89,7 @@ def searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents):
                     results[cnt].append(filename)
                     results[cnt].append(userAssist[i][3])
                     cnt += 1
-
-    print 'Moving to Checking All'
             
-    print event(results)
-    print
+    results = event(results)
     
     print sortRecents(recents)

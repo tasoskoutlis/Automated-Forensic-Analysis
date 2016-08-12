@@ -1,15 +1,6 @@
 '''
-Check SYSTEM and SOFTWARE Hives
-
 https://www.fireeye.com/blog/threat-research/2011/07/parsing-registry-hives-python.html
-
 https://github.com/williballenthin/python-registry/blob/master/samples/forensicating.py
-
-print "%s = %s " % (value.name(), value.value())
-
-
-MUST ADD A exceptions -> try in case a locations doesnt have anything like Comdlg32
-
 '''
 #!/usr/bin/env python
 from Registry import Registry
@@ -201,24 +192,24 @@ def ntuserInfo(name):
     '''        
     try: 
         os.system('python regparse.py --plugin userassist --hives files/NTUSER.DAT \
-                                                            --format "{{ last_write }}|{{ sub_key }}|{{ runcount }}|{{ windate }}|{{ data }}" > forcsv/userassist' + '_' + name + '.csv')
+                                                --format "{{ last_write }}|{{ sub_key }}|{{ runcount }}|{{ windate }}|{{ data }}" > forcsv/userassist' + '_' + name + '.csv')
     except:
         print 'No UserAssist information for NTUSER.DAT' + name
 
     try: 
         os.system('python regparse.py --plugin runmru --hives files/NTUSER.DAT \
-                                                            --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > forcsv/mru' + '_' + name + '.csv')
+                                                --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > forcsv/mru' + '_' + name + '.csv')
     except:
         print 'No RunMRU information for NTUSER.DAT' + name
 
     try: 
         os.system('python regparse.py --plugin recentdocs --hives files/NTUSER.DAT \
-                                                            --format "{{last_write}}|{{key_name}}|{{key}}|{{value}}|{{data}}" > forcsv/recent' + '_' + name + '.csv')
+                                                --format "{{last_write}}|{{key_name}}|{{key}}|{{value}}|{{data}}" > forcsv/recent' + '_' + name + '.csv')
     except:
         print 'No RecentDocs information for NTUSER.DAT' + name
         
     try: 
         os.system('python regparse.py --plugin lastvisitedmru --hives files/NTUSER.DAT \
-                                                            --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > forcsv/lastvisitedmru' + '_' + name + '.csv')
+                                                --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > forcsv/lastvisitedmru' + '_' + name + '.csv')
     except:
         print 'No LastVisitedMRU information for NTUSER.DAT' + name
