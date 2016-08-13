@@ -88,7 +88,9 @@ def searchFile(name, mftArray, userAssist, recents):
             results.append([]) 
             filename = mftArray[i][7]          
             for j in range(8,12):
-                #format is [path str_time, timestamp,...] - [text.txt Std Info Access Date, 2015-01-02 22:49:35.829651]
+                #format is [path str_time info, timestamp,...] - [text.txt Std Info Access Date, 2015-01-02 22:49:35.829651]
+                #From /Users/student/Documents/RecycleTestDocument.rtf store RecycleTestDocument.rtf
+                filename = filename[filename.rfind('/')+1:]
                 results[cnt].append(filename + ' ' + mftArray[0][j])
                 results[cnt].append(mftArray[i][j])
             cnt += 1
@@ -105,8 +107,11 @@ def searchFile(name, mftArray, userAssist, recents):
                 #It will hit the exception when it finds 1601-01-01 00:00:00
                 continue
             if checkTimestamps(timestamp, results[0][j]) == 1:
-                results.append([])            
-                results[cnt].append(userAssist[i][4])
+                results.append([])
+                filename = userAssist[i][4]
+                #From {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Accessories\Wordpad.lnk store Wordpad.lnk
+                filename = filename[filename.rfind('\\')+1:]            
+                results[cnt].append(filename)
                 results[cnt].append(userAssist[i][3])
                 cnt += 1
                 break
@@ -123,7 +128,10 @@ def searchFile(name, mftArray, userAssist, recents):
                 continue
             if timeCreated(timestamp, results[j][1]) == 1:
                 results.append([])            
-                results[cnt].append(userAssist[i][4])
+                filename = userAssist[i][4]
+                #From {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Accessories\Wordpad.lnk store Wordpad.lnk
+                filename = filename[filename.rfind('\\')+1:]            
+                results[cnt].append(filename)                
                 results[cnt].append(userAssist[i][3])
                 cnt += 1
                 #BREAK MIGHT CAUSE PROBLEMS IN THE FUTURE!!!!!!!!MIGHT LOSE OTHER EVENTS
@@ -135,3 +143,4 @@ def searchFile(name, mftArray, userAssist, recents):
     for i in range(0, len(eventArray), 2):
         print '%s  ----  %s ' % (eventArray[i], eventArray[i+1])
     
+    return eventArray

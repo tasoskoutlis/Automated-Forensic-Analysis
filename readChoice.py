@@ -41,7 +41,5 @@ def options():
         recent = raw_input('Provide the path of the RecentDocs csv file: ')    
         #lastvisitedmru = raw_input('Provide the path of the lastVisitedMRU csv file: ')    
         #mru = raw_input('Provide the path of the RunMRU csv file: ')    
- 
-options()  
-    
+     
     

@@ -1,0 +1,18 @@
+nodedef>name , style INT, width DOUBLE, color VARCHAR, image VARCHAR, label VARCHAR, height DOUBLE, visible BOOLEAN, labelcolor VARCHAR, y DOUBLE, x DOUBLE, strokecolor VARCHAR, fixed BOOLEAN, labelvisible BOOLEAN
+RecycleTestDocument.rtf.lnk Std Info Creation date,1,4.000000,cornflowerblue,,'2015-01-02 16:38:52.962542',4.000000,true,cornflowerblue,,,cadetblue,false,true
+RecycleTestDocument.rtf Std Info Creation date,1,4.000000,cornflowerblue,,'2015-01-02 16:38:52.790941',4.000000,true,cornflowerblue,,,cadetblue,false,true
+RecycleTestDocument.rtf Std Info Modification date,1,4.000000,cornflowerblue,,'2015-01-02 16:38:52.853342',4.000000,true,cornflowerblue,,,cadetblue,false,true
+RecycleTestDocument.rtf.lnk Std Info Access date,1,4.000000,cornflowerblue,,'2015-01-02 22:49:35.829651',4.000000,true,cornflowerblue,,,cadetblue,false,true
+wordpad.exe,1,4.000000,cornflowerblue,,'2015-01-02 22:49:35.782000',4.000000,true,cornflowerblue,,,cadetblue,false,true
+RecycleTestDocument.rtf.lnk Std Info Modification date,1,4.000000,cornflowerblue,,'2015-01-02 22:49:35.829651',4.000000,true,cornflowerblue,,,cadetblue,false,true
+RecycleTestDocument.rtf.lnk Std Info Entry date,1,4.000000,cornflowerblue,,'2015-01-02 22:49:35.829651',4.000000,true,cornflowerblue,,,cadetblue,false,true
+Wordpad.lnk,1,4.000000,cornflowerblue,,'2015-01-02 16:36:48.146000',4.000000,true,cornflowerblue,,,cadetblue,false,true
+RecycleTestDocument.rtf Std Info Access date,1,4.000000,cornflowerblue,,'2015-01-02 16:38:52.853342',4.000000,true,cornflowerblue,,,cadetblue,false,true
+RecycleTestDocument.rtf Std Info Entry date,1,4.000000,cornflowerblue,,'2015-01-02 22:44:00.958660',4.000000,true,cornflowerblue,,,cadetblue,false,true
+edgedef>node1 , node2 , directed BOOLEAN, color VARCHAR, weight DOUBLE, width DOUBLE, label VARCHAR, visible BOOLEAN, labelcolor VARCHAR, labelvisible BOOLEAN
+wordpad.exe,RecycleTestDocument.rtf.lnk Std Info Entry date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
+RecycleTestDocument.rtf Std Info Access date,RecycleTestDocument.rtf Std Info Modification date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
+RecycleTestDocument.rtf Std Info Modification date,RecycleTestDocument.rtf.lnk Std Info Creation date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
+RecycleTestDocument.rtf Std Info Creation date,RecycleTestDocument.rtf Std Info Access date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
+RecycleTestDocument.rtf.lnk Std Info Entry date,RecycleTestDocument.rtf.lnk Std Info Access date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
+RecycleTestDocument.rtf.lnk Std Info Access date,RecycleTestDocument.rtf.lnk Std Info Modification date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false

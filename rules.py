@@ -6,6 +6,7 @@ import readChoice
 import ruleSearchFile
 import ruleSearchTimeFrame
 import ruleSearchRecycleBin
+import gephi
 from datetime import datetime
 
 def registryInfo(f):
@@ -75,6 +76,7 @@ def parsers(userAssistFilename, recentFilename):
 def main():
     
     ruleOptionsArray = []
+    results = []
     
     ruleOptionsArray = readChoice.options()
     
@@ -83,7 +85,7 @@ def main():
     #Rule 1 - Search everything to find information about a specific file
     if ruleOptionsArray[0] == 1:
         
-        ruleSearchFile.searchFile(ruleOptionsArray[5], mftArray, userAssist, recents)
+        results = ruleSearchFile.searchFile(ruleOptionsArray[5], mftArray, userAssist, recents)
         
         #Search the Recycle Bin entries for information
         #recycleBin = ruleSearchRecycleBin.searchRecycleBin(mftArray)
@@ -93,7 +95,7 @@ def main():
     #Rule 2 - Everything that occurred in a given time frame
     elif ruleOptionsArray[0] == 2:
         
-        ruleSearchTimeFrame.searchTimeFrame(ruleOptionsArray[5], ruleOptionsArray[6], mftArray, userAssist, recents)
+        results = ruleSearchTimeFrame.searchTimeFrame(ruleOptionsArray[5], ruleOptionsArray[6], mftArray, userAssist, recents)
     
     #Rule 3 - Everything that happened in a user's session
     elif ruleOptionsArray[0] == 3:
@@ -101,8 +103,12 @@ def main():
         mintime = [1900, 1, 1]
         maxtime = [9999, 12, 31]
         
-        ruleSearchTimeFrame.searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents)
-                  
+        results = ruleSearchTimeFrame.searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents)
+         
+    gephi.createGraph(results)
+    print 'Finished Gephi'
+          
+                      
 
 if __name__ == "__main__":
     main()
