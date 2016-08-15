@@ -11,8 +11,14 @@ RecycleTestDocument.rtf Std Info Access date,1,4.000000,cornflowerblue,,'2015-01
 RecycleTestDocument.rtf Std Info Entry date,1,4.000000,cornflowerblue,,'2015-01-02 22:44:00.958660',4.000000,true,cornflowerblue,,,cadetblue,false,true
 edgedef>node1 , node2 , directed BOOLEAN, color VARCHAR, weight DOUBLE, width DOUBLE, label VARCHAR, visible BOOLEAN, labelcolor VARCHAR, labelvisible BOOLEAN
 wordpad.exe,RecycleTestDocument.rtf.lnk Std Info Entry date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
-RecycleTestDocument.rtf Std Info Access date,RecycleTestDocument.rtf Std Info Modification date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
 RecycleTestDocument.rtf Std Info Modification date,RecycleTestDocument.rtf.lnk Std Info Creation date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
+wordpad.exe,RecycleTestDocument.rtf.lnk Std Info Access date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
+RecycleTestDocument.rtf Std Info Access date,RecycleTestDocument.rtf.lnk Std Info Creation date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
+RecycleTestDocument.rtf Std Info Creation date,RecycleTestDocument.rtf Std Info Modification date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
+RecycleTestDocument.rtf Std Info Access date,RecycleTestDocument.rtf Std Info Modification date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
+RecycleTestDocument.rtf.lnk Std Info Entry date,RecycleTestDocument.rtf.lnk Std Info Modification date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
+wordpad.exe,RecycleTestDocument.rtf.lnk Std Info Modification date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
 RecycleTestDocument.rtf Std Info Creation date,RecycleTestDocument.rtf Std Info Access date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
+RecycleTestDocument.rtf Std Info Creation date,RecycleTestDocument.rtf.lnk Std Info Creation date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
 RecycleTestDocument.rtf.lnk Std Info Entry date,RecycleTestDocument.rtf.lnk Std Info Access date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
 RecycleTestDocument.rtf.lnk Std Info Access date,RecycleTestDocument.rtf.lnk Std Info Modification date,true,dandelion,1.000000,3.000000,'1',true,dandelion,false

@@ -1,9 +1,12 @@
+'''
+Provides the user options
+'''
 def options():
-    rule = int(raw_input('Choose rule to run: \
-                    1 - Search for a specific file and find all connections \
-                    2 - Search for a specific time frame and find all connections \
-                    3 - Search for a specific user and find all connections \
-                    4 - Search everything '))
+    rule = int(raw_input('Choose rule to run: \n\
+    1 - Search for a specific file and find all connections \n\
+    2 - Search for a specific time frame and find all connections \n\
+    3 - Search for a specific user and find all connections \n\
+    4 - Search everything '))
     
     #Search for a specific file
     if rule == 1:

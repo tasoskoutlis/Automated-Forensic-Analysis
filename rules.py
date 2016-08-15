@@ -40,37 +40,70 @@ def mft(f):
     return eventArray
 
 
-def parsers(userAssistFilename, recentFilename):
+def parsers(ruleOptionsArray):
     ''' Reads mft.csv file and extracts info to an array each row represents information about a file
         f               - file
         @eventArray     - return array with results
-    '''    
+    ''' 
+    userassistPath = ruleOptionsArray[1]
+    recentsPath = ruleOptionsArray[2]
+    lastvisitedmruPath = ruleOptionsArray[3]
+    runmruPath = ruleOptionsArray[4]
+    
+    userAssist = []
+    recents = []
+    lastvisitedmru = []
+    runmru = []
+    
     #Read information from MFT
     f = open('forcsv/mft.csv', 'rb')
     mftArray = mft(f)
     f.close()
     
     #Read information from User Assist
-    f = open('forcsv/userassist_student.csv', 'rb')
-    userAssist = registryInfo(f)
-    f.close()
+    if userassistPath != '':
+        f = open(userassistPath, 'rb')
+        userAssist = registryInfo(f)
+        f.close()
     
-    #Do some sanitization
-    for i in xrange(len(userAssist)):
-        userAssist[i][4] = userAssist[i][4].rstrip('\n')
+        #Do some sanitization
+        for i in xrange(len(userAssist)):
+            userAssist[i][4] = userAssist[i][4].rstrip('\n')
         
     #Read information from Recent
-    f = open('forcsv/recent_student.csv', 'rb')
-    recents = registryInfo(f)
-    f.close()
+    if recentsPath != '':
+        f = open(recentsPath, 'rb')
+        recents = registryInfo(f)
+        f.close()
     
-    #Do some sanitization
-    for i in xrange(len(recents)):
-        recents[i][4] = recents[i][4].rstrip('\n')
-        #From '\x00a\x00n\x00d\x00' we strip all \x00 and as a result we have 'and ' 
-        recents[i][4] = recents[i][4].replace('\x00', '')
+        #Do some sanitization
+        for i in xrange(len(recents)):
+            recents[i][4] = recents[i][4].rstrip('\n')
+            #From '\x00a\x00n\x00d\x00' we strip all \x00 and as a result we have 'and ' 
+            recents[i][4] = recents[i][4].replace('\x00', '')
     
-    return mftArray, userAssist, recents
+    #Read information from Recent
+    if lastvisitedmruPath != '':
+        f = open(lastvisitedmruPath, 'rb')
+        lastvisitedmru = registryInfo(f)
+        f.close()
+        
+        #Do some sanitization
+        #for i in xrange(len(lastvisitedmru)):
+        #    lastvisitedmru[i][4] = lastvisitedmru[i][4].rstrip('\n')
+    
+    #Read information from Recent
+    if runmruPath != '':
+        f = open(runmruPath, 'rb')
+        runmru = registryInfo(f)
+        f.close()
+        
+        #Do some sanitization
+        #for i in xrange(len(runmru)):
+        #    runmru[i][4] = runmru[i][4].rstrip('\n')
+    
+    #Arrays will contain information or empty
+    return mftArray, userAssist, recents, lastvisitedmru, runmru
  
     
 def main():
@@ -80,12 +113,13 @@ def main():
     
     ruleOptionsArray = readChoice.options()
     
-    mftArray, userAssist, recents = parsers(ruleOptionsArray[1], ruleOptionsArray[2])
+    mftArray, userAssist, recents, lastvisitedmru, runmru = parsers(ruleOptionsArray)
     
     #Rule 1 - Search everything to find information about a specific file
     if ruleOptionsArray[0] == 1:
         
-        results = ruleSearchFile.searchFile(ruleOptionsArray[5], mftArray, userAssist, recents)
+        filename = ruleOptionsArray[5]
+        results = ruleSearchFile.searchFile(filename, mftArray, userAssist, recents, lastvisitedmru, runmru)
         
         #Search the Recycle Bin entries for information
         #recycleBin = ruleSearchRecycleBin.searchRecycleBin(mftArray)
@@ -95,7 +129,7 @@ def main():
     #Rule 2 - Everything that occurred in a given time frame
     elif ruleOptionsArray[0] == 2:
         
-        results = ruleSearchTimeFrame.searchTimeFrame(ruleOptionsArray[5], ruleOptionsArray[6], mftArray, userAssist, recents)
+        results = ruleSearchTimeFrame.searchTimeFrame(ruleOptionsArray[5], ruleOptionsArray[6], mftArray, userAssist, recents, lastvisitedmru, runmru)
     
     #Rule 3 - Everything that happened in a user's session
     elif ruleOptionsArray[0] == 3:
@@ -103,10 +137,12 @@ def main():
         mintime = [1900, 1, 1]
         maxtime = [9999, 12, 31]
         
-        results = ruleSearchTimeFrame.searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents)
-         
+        results = ruleSearchTimeFrame.searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisitedmru, runmru)
+    
+    print '[*] Finished rule parsing'
+           
     gephi.createGraph(results)
-    print 'Finished Gephi'
+    print '[*] Finished Gephi file creation'
           
                       
 

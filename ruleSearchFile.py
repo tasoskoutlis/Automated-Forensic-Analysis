@@ -71,7 +71,7 @@ def event(results):
     return eventArray
 
 
-def searchFile(name, mftArray, userAssist, recents):
+def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru):
     ''' Find every timestamp and info that has to do with the name argument
         name            - The name of the file to search
         mftArray        - The mft array
@@ -95,8 +95,7 @@ def searchFile(name, mftArray, userAssist, recents):
                 results[cnt].append(mftArray[i][j])
             cnt += 1
 
-    #print 'Moving to Checking All'
-    
+    #Search in user assist to find the programs used based on the file's timestamps
     size = len(results)
     for i in xrange(len(userAssist)):
         timestamp = userAssist[i][3]
@@ -116,8 +115,7 @@ def searchFile(name, mftArray, userAssist, recents):
                 cnt += 1
                 break
      
-    #print 'Moving to Created'
-     
+    #Try to find the program that opened the file
     for i in xrange(len(userAssist)):
         timestamp = userAssist[i][3]
         for j in xrange(size):
@@ -143,4 +141,5 @@ def searchFile(name, mftArray, userAssist, recents):
     for i in range(0, len(eventArray), 2):
         print '%s  ----  %s ' % (eventArray[i], eventArray[i+1])
     
+    print '[*] Finished Search File Rule'
     return eventArray

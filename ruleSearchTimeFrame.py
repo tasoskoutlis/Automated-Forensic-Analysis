@@ -58,7 +58,7 @@ def event(results):
     return eventArray
 
 
-def searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents):
+def searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisitedmru, runmru):
     ''' Find every timestamp and info that has to do with the name argument
         name            - The name of the file to search
         mftArray        - The mft array
@@ -93,3 +93,5 @@ def searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents):
     results = event(results)
     
     print sortRecents(recents)
+    
+    print '[*] Finished Search Time Frame Rule'

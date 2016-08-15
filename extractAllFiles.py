@@ -87,7 +87,7 @@ def extraction(directory, pPath, pPathName):
                     
             #Extract File Information
             if fname == '$MFT':
-                print '    Found Master File Table...Starting extraction process'
+                print '[*]    Found Master File Table...Starting extraction process'
                 outfile = open('files/MFT', 'w')
                 filedata = f.read_random(0, f.info.meta.size)
                 outfile.write(filedata)
@@ -95,35 +95,35 @@ def extraction(directory, pPath, pPathName):
                 
             #Extract Windows Registry Information
             elif (fname == 'SAM' or fname == 'sam') and outputPath.endswith('config'):
-                print '    Found SAM Hive in %s...Starting extraction process' % (outputPath)
+                print '[*]    Found SAM Hive in %s...Starting extraction process' % (outputPath)
                 outfile = open('files/SAM', 'w')
                 filedata = f.read_random(0, f.info.meta.size)
                 outfile.write(filedata)
                 outfile.close()
                 
             elif (fname == 'SECURITY' or fname == 'security') and outputPath.endswith('config'):
-                print '    Found SECURITY Hive in %s...Starting extraction process' % (outputPath)
+                print '[*]    Found SECURITY Hive in %s...Starting extraction process' % (outputPath)
                 outfile = open('files/SECURITY', 'w')
                 filedata = f.read_random(0, f.info.meta.size)
                 outfile.write(filedata)
                 outfile.close()
                 
             elif (fname == 'SYSTEM' or fname == 'system') and outputPath.endswith('config'):
-                print '    Found SYSTEM Hive in %s...Starting extraction process' % (outputPath)
+                print '[*]    Found SYSTEM Hive in %s...Starting extraction process' % (outputPath)
                 outfile = open('files/SYSTEM', 'w')
                 filedata = f.read_random(0, f.info.meta.size)
                 outfile.write(filedata)
                 outfile.close()
                 
             elif (fname == 'SOFTWARE' or fname == 'software') and outputPath.endswith('config'):
-                print '    Found SOFTWARE Hive in %s...Starting extraction process' % (outputPath)
+                print '[*]    Found SOFTWARE Hive in %s...Starting extraction process' % (outputPath)
                 outfile = open('files/SOFTWARE', 'w')
                 filedata = f.read_random(0, f.info.meta.size)
                 outfile.write(filedata)
                 outfile.close()
                 
             elif fname == 'NTUSER.DAT' and ('LocalService' not in outputPath) and ('NetworkService' not in outputPath):
-                print '    Found NTUSER.DAT in %s ...Starting extraction process' % (outputPath)
+                print '[*]    Found NTUSER.DAT in %s ...Starting extraction process' % (outputPath)
                 
                 #Store file
                 outfile = open('files/NTUSER.DAT', 'w')
@@ -181,17 +181,17 @@ def main():
     parseImage(diskPath)
     
     #Extract MFT information to .csv
-    print 'Extracting MFT information to csv...'
+    print '[*] Extracting MFT information to csv'
     os.system('analyzeMFT.py -f forfiles/MFT -o forcsv/mft.csv')
 
     #Extract Registry information to .csv
-    print 'Extracting Registry information to csv...'
+    print '[*] Extracting Registry information to csv'
     analyzeRegistry.systemInfo()
     analyzeRegistry.softwareInfo()
     analyzeRegistry.deviceInfo()
 
     #Rules
-    
+    print '[*] Starting Rule process'
 
 if __name__ == "__main__":
     main()

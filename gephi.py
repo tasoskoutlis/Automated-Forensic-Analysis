@@ -20,7 +20,7 @@ def createGraph(results):
             timestamp1 = results[i+1]
             timestamp2 = results[j+1]       
             if ruleSearchFile.checkTimestamps(timestamp1, timestamp2) == 1:
-                entities.link(results[i], results[i+2])
+                entities.link(results[i], results[j])
     
     print entities.dumps()
     f.write(entities.dumps())
@@ -34,18 +34,25 @@ from gdflib import GdfEntries, Node
 
 f = open('gephi.gdf', 'w')
 
-class Product(Node):
-    company = String(default='Unknown Company')
-    price = Double(required=True)
+class Evidence(Node):
+    filename = String(default = 'Filename', required = True)
+    timestamp = String(default = 'YYYY-MM-DD HH:MM', required = True)
     
-entities = GdfEntries(Product)
-entities.add_node(Product(name='node1', company='Custom Company', price=33.10, labelvisible=True))
-entities.add_node(Product(name='node2', label='Low Cost Product', price=18.21, labelvisible=True))
-entities.link('node1', 'node2')
+entities = GdfEntries(Evidence)
 
+counter = 1
+for i in range(0, len(results), 2):
+    entities.add_node(Evidence(name = results[i], label = counter, filename = results[i] , timestamp = results[i+1], labelvisible = True))
+    counter += 1
+    
+for i in range(0, len(results)-2, 2):
+    for j in range(i+2, len(results), 2):
+        timestamp1 = results[i+1]
+        timestamp2 = results[j+1]       
+        if ruleSearchFile.checkTimestamps(timestamp1, timestamp2) == 1:
+            entities.link(results[i], results[j])
+            
 print entities.dumps()
-
 f.write(entities.dumps())
-
 f.close()
 '''
