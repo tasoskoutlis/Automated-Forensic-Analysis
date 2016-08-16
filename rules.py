@@ -7,7 +7,6 @@ import ruleSearchFile
 import ruleSearchTimeFrame
 import ruleSearchRecycleBin
 import gephi
-from datetime import datetime
 
 def registryInfo(f):
     ''' Reads a .csv file and extracts info to an array each row represents an event
@@ -122,7 +121,7 @@ def main():
         results = ruleSearchFile.searchFile(filename, mftArray, userAssist, recents, lastvisitedmru, runmru)
         
         #Search the Recycle Bin entries for information
-        #recycleBin = ruleSearchRecycleBin.searchRecycleBin(mftArray)
+        recycleBin = ruleSearchRecycleBin.searchRecycleBin(mftArray)
     
         #print recycleBin
             
