@@ -81,7 +81,7 @@ def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru):
     
     results = []
     cnt = 0
-    
+
     #Search for a specific file name in the MFT table
     for i in xrange(len(mftArray)):
         if name in mftArray[i][7]:

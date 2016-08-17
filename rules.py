@@ -7,6 +7,8 @@ import ruleSearchFile
 import ruleSearchTimeFrame
 import ruleSearchRecycleBin
 import gephi
+import datetime
+
 
 def registryInfo(f):
     ''' Reads a .csv file and extracts info to an array each row represents an event
@@ -88,8 +90,9 @@ def parsers(ruleOptionsArray):
         f.close()
         
         #Do some sanitization
-        #for i in xrange(len(lastvisitedmru)):
-        #    lastvisitedmru[i][4] = lastvisitedmru[i][4].rstrip('\n')
+        for i in xrange(len(lastvisitedmru)):
+            lastvisitedmru[i][4] = lastvisitedmru[i][4].rstrip('\n')
+            #print 'LASTVISITEDMRUUUU ', lastvisitedmru[i][4]
     
     #Read information from Recent
     if runmruPath != '':
@@ -98,8 +101,8 @@ def parsers(ruleOptionsArray):
         f.close()
         
         #Do some sanitization
-        #for i in xrange(len(runmru)):
-        #    runmru[i][4] = runmru[i][4].rstrip('\n')
+        for i in xrange(len(runmru)):
+            runmru[i][4] = runmru[i][4].rstrip('\n')
     
     #Arrays will contain information or empty
     return mftArray, userAssist, recents, lastvisitedmru, runmru
@@ -128,14 +131,16 @@ def main():
     #Rule 2 - Everything that occurred in a given time frame
     elif ruleOptionsArray[0] == 2:
         
-        results = ruleSearchTimeFrame.searchTimeFrame(ruleOptionsArray[5], ruleOptionsArray[6], mftArray, userAssist, recents, lastvisitedmru, runmru)
+        mintime = datetime.datetime(ruleOptionsArray[5][0], ruleOptionsArray[5][1], ruleOptionsArray[5][2])
+        maxtime = datetime.datetime(ruleOptionsArray[6][0], ruleOptionsArray[6][1], ruleOptionsArray[6][2])
+        
+        results = ruleSearchTimeFrame.searchTimeFrame(mintime, mintime, mftArray, userAssist, recents, lastvisitedmru, runmru)
     
     #Rule 3 - Everything that happened in a user's session
     elif ruleOptionsArray[0] == 3:
         
-        mintime = [1900, 1, 1]
-        maxtime = [9999, 12, 31]
-        
+        mintime = datetime.datetime(1900, 1 , 1)
+        maxtime = datetime.datetime(9999, 12 , 31)
         results = ruleSearchTimeFrame.searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisitedmru, runmru)
     
     print '[*] Finished rule parsing'
