@@ -131,10 +131,10 @@ def main():
     #Rule 2 - Everything that occurred in a given time frame
     elif ruleOptionsArray[0] == 2:
         
-        mintime = datetime.datetime(ruleOptionsArray[5][0], ruleOptionsArray[5][1], ruleOptionsArray[5][2])
-        maxtime = datetime.datetime(ruleOptionsArray[6][0], ruleOptionsArray[6][1], ruleOptionsArray[6][2])
+        mintime = ruleOptionsArray[5]
+        maxtime = ruleOptionsArray[6]
         
-        results = ruleSearchTimeFrame.searchTimeFrame(mintime, mintime, mftArray, userAssist, recents, lastvisitedmru, runmru)
+        results = ruleSearchTimeFrame.searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisitedmru, runmru)
     
     #Rule 3 - Everything that happened in a user's session
     elif ruleOptionsArray[0] == 3:
@@ -147,8 +147,7 @@ def main():
            
     gephi.createGraph(results)
     print '[*] Finished Gephi file creation'
-          
-                      
+    
 
 if __name__ == "__main__":
     main()

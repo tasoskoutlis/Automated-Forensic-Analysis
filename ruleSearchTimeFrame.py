@@ -16,7 +16,7 @@ def insideTimeframe(timestamp, mintime, maxtime):
         return False
     
     #Compare times with given timeframe
-    if (time - mintime).total_seconds() > 0 and (maxtime - time).total_seconds() < 0 :
+    if (time - mintime).total_seconds() > 0 and (maxtime - time).total_seconds() > 0 :
         return 1
     return 0
         
@@ -101,6 +101,13 @@ def searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisited
     checkresults = []
     cnt = 0
     
+    print userAssist
+    print
+    print lastvisitedmru
+    print
+    print runmru
+    
+    
     if lastvisitedmru != []:
         checkresults = registrySpots(lastvisitedmru)
         for i in xrange(len(checkresults)):
@@ -119,7 +126,7 @@ def searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisited
                 results.append([]) 
                 results[cnt].append(checkresults[i][0])
                 results[cnt].append(checkresults[i][1])
-                cnt += 1
+                cnt += 1 
     
     #Search for a specific file name in the MFT table
     for i in xrange(len(userAssist)):
@@ -135,13 +142,22 @@ def searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisited
             results[cnt].append(userAssist[i][3])
             cnt += 1
     
+    print
+    print results
+    print
+    
     results = event(results)
     
     print sortRecents(recents)
+    print
+    print results
     
+    print len(results)
     '''
     results holds all info about userassist,runmru and lastvisitedmru
     recents holds info about recent
     '''
     
     print '[*] Finished Search Time Frame Rule'
+    
+    return results

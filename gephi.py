@@ -18,7 +18,7 @@ def createGraph(results):
     
     counter = 1
     for i in range(0, len(results), 2):
-        entities.add_node(Evidence(name = results[i], label = counter, filename = results[i] , timestamp = results[i+1], labelvisible = True))
+        entities.add_node(Evidence(name = counter, label = counter, filename = results[i] , timestamp = results[i+1], labelvisible = True))
         counter += 1
 
     for i in range(0, len(results)-2, 2):
@@ -26,13 +26,13 @@ def createGraph(results):
             timestamp1 = results[i+1]
             timestamp2 = results[j+1]       
             if ruleSearchFile.checkTimestamps(timestamp1, timestamp2) == 1:
-                entities.link(results[i], results[j], directed = False)
+                entities.link(i/2 + 1, j/2 + 1, directed = False)
     
     for i in range(0, len(results)-2, 2):
         timestamp1 = results[i+1]
         timestamp2 = results[i+3]
         if ruleSearchFile.checkTimestamps(timestamp1, timestamp2) != 1:
-            entities.link(results[i], results[i+2])
+            entities.link((i+1)/2 + 1, (i+3)/2 + 1)
     
     print entities.dumps()
     f.write(entities.dumps())
