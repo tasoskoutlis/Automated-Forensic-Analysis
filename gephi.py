@@ -3,8 +3,8 @@ Main Graph script - Read the result array and create the visualization
 '''
 #!/usr/bin/env python
 import ruleSearchFile
-from gdflib import String
 from gdflib import GdfEntries, Node
+from gdflib import String
 
 f = open('gephi.gdf', 'w')
 

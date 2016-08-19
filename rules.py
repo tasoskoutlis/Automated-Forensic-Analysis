@@ -10,7 +10,7 @@ import gephi
 import datetime
 
 
-def registryInfo(f):
+def parseRegistry(f):
     ''' Reads a .csv file and extracts info to an array each row represents an event
         f               - file
         @eventArray     - return array with results
@@ -22,7 +22,7 @@ def registryInfo(f):
     return eventArray
 
 
-def mft(f):
+def parseMFT(f):
     ''' Reads mft.csv file and extracts info to an array each row represents information about a file
         f               - file
         @eventArray     - return array with results
@@ -41,15 +41,15 @@ def mft(f):
     return eventArray
 
 
-def parsers(ruleOptionsArray):
+def parsers(arrays):
     ''' Reads mft.csv file and extracts info to an array each row represents information about a file
         f               - file
         @eventArray     - return array with results
     ''' 
-    userassistPath = ruleOptionsArray[1]
-    recentsPath = ruleOptionsArray[2]
-    lastvisitedmruPath = ruleOptionsArray[3]
-    runmruPath = ruleOptionsArray[4]
+    userassistPath = arrays[1]
+    recentsPath = arrays[2]
+    lastvisitedmruPath = arrays[3]
+    runmruPath = arrays[4]
     
     userAssist = []
     recents = []
@@ -58,13 +58,13 @@ def parsers(ruleOptionsArray):
     
     #Read information from MFT
     f = open('forcsv/mft.csv', 'rb')
-    mftArray = mft(f)
+    mftArray = parseMFT(f)
     f.close()
     
     #Read information from User Assist
     if userassistPath != '':
         f = open(userassistPath, 'rb')
-        userAssist = registryInfo(f)
+        userAssist = parseRegistry(f)
         f.close()
     
         #Do some sanitization
@@ -74,7 +74,7 @@ def parsers(ruleOptionsArray):
     #Read information from Recent
     if recentsPath != '':
         f = open(recentsPath, 'rb')
-        recents = registryInfo(f)
+        recents = parseRegistry(f)
         f.close()
     
         #Do some sanitization
@@ -86,7 +86,7 @@ def parsers(ruleOptionsArray):
     #Read information from Recent
     if lastvisitedmruPath != '':
         f = open(lastvisitedmruPath, 'rb')
-        lastvisitedmru = registryInfo(f)
+        lastvisitedmru = parseRegistry(f)
         f.close()
         
         #Do some sanitization
@@ -97,7 +97,7 @@ def parsers(ruleOptionsArray):
     #Read information from Recent
     if runmruPath != '':
         f = open(runmruPath, 'rb')
-        runmru = registryInfo(f)
+        runmru = parseRegistry(f)
         f.close()
         
         #Do some sanitization
