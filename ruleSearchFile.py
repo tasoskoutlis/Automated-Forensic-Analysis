@@ -1,5 +1,5 @@
 '''
-1st Rule - Given a specific filename search every file in MFT to find information about it and extract every time information
+3st Rule - Given a specific filename search every file in MFT to find information about it and extract every time information
            Then look at the Registry information
            Finally, store all info to an Array in descending order based on timestamp.
 '''
@@ -33,6 +33,21 @@ def timeCreated(timestamp1, timestamp2):
         return 1
     return 0
     
+def findFirstEvent(results):
+    ''' Search for the event that happened first
+        results        - contains all the timestamps that has to do with the specific file we are investigating
+        minT           - return the timestamp of the event that happened first
+    '''
+    t1 = datetime.strptime(results[0][1], "%Y-%m-%d %H:%M:%S.%f")
+    minT = results[0][1]
+    for i in range(1, len(results)):
+        t2 = datetime.strptime(results[i][1], "%Y-%m-%d %H:%M:%S.%f")
+        if t2 == min(t1,t2):
+            t1 = t2
+            minT = results[i][1]
+            
+    return minT
+
 
 def event(results):
     ''' Parse all timestamps in the results array and store them in another array in a descending order
@@ -44,29 +59,18 @@ def event(results):
     minV = [] 
     while(results):
         t1 = datetime.strptime(results[0][1], "%Y-%m-%d %H:%M:%S.%f")
-        minV = [t1, 0, 1]
+        minV = [t1, 0]
         for i in xrange(len(results)):
-            if len(results[i]) > 2:
-                for j in range(1, len(results[i]), 2):
-                    t2 = datetime.strptime(results[i][j], "%Y-%m-%d %H:%M:%S.%f")
-                    if t2 == min(t1,t2):
-                        t1 = t2
-                        minV = [t2, i, j]
-            else:
-                t2 = datetime.strptime(results[i][1], "%Y-%m-%d %H:%M:%S.%f")
-                if t2 == min(t1,t2):
-                    t1 = t2
-                    minV = [t2, i, 1]
+            t2 = datetime.strptime(results[i][1], "%Y-%m-%d %H:%M:%S.%f")
+            if t2 == min(t1,t2):
+                t1 = t2
+                minV = [t2, i]
 
         #A few of the entries (Registry) store a newline at the end so I remove it
-        eventArray.append(results[minV[1]][minV[2]-1])
-        eventArray.append(results[minV[1]][minV[2]])
-        
-        if len(results[minV[1]]) > 2:            
-            results[minV[1]].pop(minV[2])
-            results[minV[1]].pop(minV[2]-1)
-        else:
-            results.pop(minV[1])
+        eventArray.append(results[minV[1]][0])
+        eventArray.append(results[minV[1]][1])
+    
+        results.pop(minV[1])
             
     return eventArray
 
@@ -85,27 +89,26 @@ def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru):
     #Search for a specific file name in the MFT table
     for i in xrange(len(mftArray)):
         if name in mftArray[i][7]:
-            results.append([]) 
             filename = mftArray[i][7]          
             for j in range(8,12):
+                results.append([])
                 #format is [path str_time info, timestamp,...] - [text.txt Std Info Access Date, 2015-01-02 22:49:35.829651]
                 #From /Users/student/Documents/RecycleTestDocument.rtf store RecycleTestDocument.rtf
                 filename = filename[filename.rfind('/')+1:]
                 results[cnt].append(filename + ' ' + mftArray[0][j])
                 results[cnt].append(mftArray[i][j])
-            cnt += 1
+                cnt += 1
 
     #Search in user assist to find the programs used based on the file's timestamps
-    size = len(results)
     for i in xrange(len(userAssist)):
         timestamp = userAssist[i][3]
-        for j in range(1, 7, 2):
+        for j in xrange(len(results)):
             try:
                 datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S.%f")
             except:
                 #It will hit the exception when it finds 1601-01-01 00:00:00
                 continue
-            if checkTimestamps(timestamp, results[0][j]) == 1:
+            if checkTimestamps(timestamp, results[j][1]) == 1:
                 results.append([])
                 filename = userAssist[i][4]
                 #From {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Accessories\Wordpad.lnk store Wordpad.lnk
@@ -114,27 +117,26 @@ def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru):
                 results[cnt].append(userAssist[i][3])
                 cnt += 1
                 break
-     
+    
     #Try to find the program that opened the file
+    minTimestamp = findFirstEvent(results)
+    #Search User Assist
     for i in xrange(len(userAssist)):
         timestamp = userAssist[i][3]
-        for j in xrange(size):
-            try:
-                datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S.%f")
-            except:
-                #It will hit the exception when it finds 1601-01-01 00:00:00
-                continue
-            if timeCreated(timestamp, results[j][1]) == 1:
-                results.append([])            
-                filename = userAssist[i][4]
-                #From {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Accessories\Wordpad.lnk store Wordpad.lnk
-                filename = filename[filename.rfind('\\')+1:]            
-                results[cnt].append(filename)                
-                results[cnt].append(userAssist[i][3])
-                cnt += 1
-                #BREAK MIGHT CAUSE PROBLEMS IN THE FUTURE!!!!!!!!MIGHT LOSE OTHER EVENTS
-                break
-    
+        try:
+            datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S.%f")
+        except:
+            #It will hit the exception when it finds 1601-01-01 00:00:00
+            continue
+        if timeCreated(timestamp, minTimestamp) == 1:
+            results.append([])            
+            filename = userAssist[i][4]
+            #From {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Accessories\Wordpad.lnk store Wordpad.lnk
+            filename = filename[filename.rfind('\\')+1:]            
+            results[cnt].append(filename)                
+            results[cnt].append(userAssist[i][3])
+            cnt += 1
+
     #Run results of 1st Rule
     eventArray = event(results)
         

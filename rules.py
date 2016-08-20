@@ -117,8 +117,23 @@ def main():
     
     mftArray, userAssist, recents, lastvisitedmru, runmru = parsers(ruleOptionsArray)
     
-    #Rule 1 - Search everything to find information about a specific file
+    #Rule 1 - Everything that occurred in a given time frame
     if ruleOptionsArray[0] == 1:
+        
+        mintime = ruleOptionsArray[5]
+        maxtime = ruleOptionsArray[6]
+        
+        results = ruleSearchTimeFrame.searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisitedmru, runmru)
+    
+    #Rule 2 - Everything that happened in a user's session
+    elif ruleOptionsArray[0] == 2:
+        
+        mintime = datetime.datetime(1900, 1 , 1)
+        maxtime = datetime.datetime(9999, 12 , 31)
+        results = ruleSearchTimeFrame.searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisitedmru, runmru)
+        
+    #Rule 3 - Search everything to find information about a specific file
+    elif ruleOptionsArray[0] == 3:
         
         filename = ruleOptionsArray[5]
         results = ruleSearchFile.searchFile(filename, mftArray, userAssist, recents, lastvisitedmru, runmru)
@@ -128,21 +143,6 @@ def main():
     
         #print recycleBin
             
-    #Rule 2 - Everything that occurred in a given time frame
-    elif ruleOptionsArray[0] == 2:
-        
-        mintime = ruleOptionsArray[5]
-        maxtime = ruleOptionsArray[6]
-        
-        results = ruleSearchTimeFrame.searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisitedmru, runmru)
-    
-    #Rule 3 - Everything that happened in a user's session
-    elif ruleOptionsArray[0] == 3:
-        
-        mintime = datetime.datetime(1900, 1 , 1)
-        maxtime = datetime.datetime(9999, 12 , 31)
-        results = ruleSearchTimeFrame.searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisitedmru, runmru)
-    
     print '[*] Finished rule parsing'
            
     gephi.createGraph(results)

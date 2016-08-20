@@ -10,19 +10,8 @@ def options():
     3 - Search for a specific user and find all connections \n\
     4 - Search everything '))
     
-    #Search for a specific file
-    if rule == 1:
-        print 'If a .csv is empty just press enter!'
-        filename = raw_input('Provide the name of the file to search for (e.x. RecycleTestDocument.rtf): ')    
-        userassist = raw_input('Provide the path of the User Assist csv file (e.x. files/userassist_student.csv): ')    
-        recent = raw_input('Provide the path of the RecentDocs csv file: ')    
-        lastvisitedmru = raw_input('Provide the path of the lastVisitedMRU csv file: ')    
-        mru = raw_input('Provide the path of the RunMRU csv file: ')    
-    
-        return [1, userassist, recent, lastvisitedmru, mru, filename]
-    
     #Search for a specific time frame
-    elif rule == 2:
+    if rule == 1:
         mintime = [int(x) for x in raw_input('Provide a minimum timestamp to check (format 2015 3 22 - YYYY MM DD) : ').split()]
         while (mintime[0] < 1900 or mintime[0] > 9999) or (mintime[1] < 1 or mintime[1] > 12) or (mintime[2] < 1 or mintime[2] > 31):
             print 'Error!! Provide a correct minimum timestamp between 1900 and 9999'
@@ -45,13 +34,26 @@ def options():
         lastvisitedmru = raw_input('Provide the path of the lastVisitedMRU csv file: ')    
         mru = raw_input('Provide the path of the RunMRU csv file: ')   
         
-        return [2, userassist, recent, lastvisitedmru, mru, mintime, maxtime]
-    
+        return [1, userassist, recent, lastvisitedmru, mru, mintime, maxtime]
+        
     #Search a specific user 
-    elif rule == 3:
+    elif rule == 2:
         userassist = raw_input('Provide the path of the User Assist csv file: ')    
         recent = raw_input('Provide the path of the RecentDocs csv file: ')    
         lastvisitedmru = raw_input('Provide the path of the lastVisitedMRU csv file: ')    
         mru = raw_input('Provide the path of the RunMRU csv file: ')    
     
-        return [3, userassist, recent, lastvisitedmru, mru]
+        return [2, userassist, recent, lastvisitedmru, mru]
+        
+    #Search for a specific file
+    elif rule == 3:
+        print 'If a .csv is empty just press enter!'
+        filename = raw_input('Provide the name of the file to search for (e.x. RecycleTestDocument.rtf): ')    
+        userassist = raw_input('Provide the path of the User Assist csv file (e.x. files/userassist_student.csv): ')    
+        recent = raw_input('Provide the path of the RecentDocs csv file: ')    
+        lastvisitedmru = raw_input('Provide the path of the lastVisitedMRU csv file: ')    
+        mru = raw_input('Provide the path of the RunMRU csv file: ')    
+    
+        return [3, userassist, recent, lastvisitedmru, mru, filename]
+
+    

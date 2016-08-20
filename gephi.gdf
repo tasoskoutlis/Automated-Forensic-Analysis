@@ -1,12 +1,27 @@
-nodedef>name , style INT, width DOUBLE, color VARCHAR, image VARCHAR, label VARCHAR, height DOUBLE, visible BOOLEAN, labelcolor VARCHAR, y DOUBLE, x DOUBLE, strokecolor VARCHAR, fixed BOOLEAN, labelvisible BOOLEAN
-node1,1,4.000000,cornflowerblue,,'1',4.000000,true,cornflowerblue,,,cadetblue,false,true
-node3,1,4.000000,cornflowerblue,,'3',4.000000,true,cornflowerblue,,,cadetblue,false,true
-node2,1,4.000000,cornflowerblue,,'2',4.000000,true,cornflowerblue,,,cadetblue,false,true
-node5,1,4.000000,cornflowerblue,,'5',4.000000,true,cornflowerblue,,,cadetblue,false,true
-node4,1,4.000000,cornflowerblue,,'4',4.000000,true,cornflowerblue,,,cadetblue,false,true
+nodedef>name , style INT, width DOUBLE, color VARCHAR, image VARCHAR, label VARCHAR, height DOUBLE, visible BOOLEAN, labelcolor VARCHAR, y DOUBLE, x DOUBLE, strokecolor VARCHAR, fixed BOOLEAN, labelvisible BOOLEAN, timestamp VARCHAR, filename VARCHAR
+1,1,4.000000,cornflowerblue,,'1',4.000000,true,cornflowerblue,,,cadetblue,false,true,'2015-01-02 16:36:48.146000','Wordpad.lnk'
+2,1,4.000000,cornflowerblue,,'2',4.000000,true,cornflowerblue,,,cadetblue,false,true,'2015-01-02 16:38:52.790941','RecycleTestDocument.rtf Std Info Creation date'
+3,1,4.000000,cornflowerblue,,'3',4.000000,true,cornflowerblue,,,cadetblue,false,true,'2015-01-02 16:38:52.853342','RecycleTestDocument.rtf Std Info Access date'
+4,1,4.000000,cornflowerblue,,'4',4.000000,true,cornflowerblue,,,cadetblue,false,true,'2015-01-02 16:38:52.853342','RecycleTestDocument.rtf Std Info Modification date'
+5,1,4.000000,cornflowerblue,,'5',4.000000,true,cornflowerblue,,,cadetblue,false,true,'2015-01-02 16:38:52.962542','RecycleTestDocument.rtf.lnk Std Info Creation date'
+6,1,4.000000,cornflowerblue,,'6',4.000000,true,cornflowerblue,,,cadetblue,false,true,'2015-01-02 22:44:00.958660','RecycleTestDocument.rtf Std Info Entry date'
+7,1,4.000000,cornflowerblue,,'7',4.000000,true,cornflowerblue,,,cadetblue,false,true,'2015-01-02 22:49:35.782000','wordpad.exe'
+8,1,4.000000,cornflowerblue,,'8',4.000000,true,cornflowerblue,,,cadetblue,false,true,'2015-01-02 22:49:35.829651','RecycleTestDocument.rtf.lnk Std Info Entry date'
+9,1,4.000000,cornflowerblue,,'9',4.000000,true,cornflowerblue,,,cadetblue,false,true,'2015-01-02 22:49:35.829651','RecycleTestDocument.rtf.lnk Std Info Access date'
+10,1,4.000000,cornflowerblue,,'10',4.000000,true,cornflowerblue,,,cadetblue,false,true,'2015-01-02 22:49:35.829651','RecycleTestDocument.rtf.lnk Std Info Modification date'
 edgedef>node1 , node2 , directed BOOLEAN, color VARCHAR, weight DOUBLE, width DOUBLE, label VARCHAR, visible BOOLEAN, labelcolor VARCHAR, labelvisible BOOLEAN
-node4,node5,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
-node1,node2,false,dandelion,1.000000,3.000000,'1',true,dandelion,false
-node1,node3,false,dandelion,1.000000,3.000000,'1',true,dandelion,false
-node3,node4,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
-node2,node3,false,dandelion,1.000000,3.000000,'1',true,dandelion,false
+3,4,false,dandelion,1.000000,3.000000,'1',true,dandelion,false
+1,2,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
+7,10,false,dandelion,1.000000,3.000000,'1',true,dandelion,false
+9,10,false,dandelion,1.000000,3.000000,'1',true,dandelion,false
+7,8,false,dandelion,1.000000,3.000000,'1',true,dandelion,false
+7,9,false,dandelion,1.000000,3.000000,'1',true,dandelion,false
+8,10,false,dandelion,1.000000,3.000000,'1',true,dandelion,false
+8,9,false,dandelion,1.000000,3.000000,'1',true,dandelion,false
+4,5,false,dandelion,1.000000,3.000000,'1',true,dandelion,false
+3,5,false,dandelion,1.000000,3.000000,'1',true,dandelion,false
+6,7,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
+2,3,false,dandelion,1.000000,3.000000,'1',true,dandelion,false
+2,5,false,dandelion,1.000000,3.000000,'1',true,dandelion,false
+2,4,false,dandelion,1.000000,3.000000,'1',true,dandelion,false
+5,6,true,dandelion,1.000000,3.000000,'1',true,dandelion,false
