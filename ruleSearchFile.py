@@ -36,7 +36,7 @@ def timeCreated(timestamp1, timestamp2):
 def findFirstEvent(results):
     ''' Search for the event that happened first
         results        - contains all the timestamps that has to do with the specific file we are investigating
-        minT           - return the timestamp of the event that happened first
+        @minT           - return the timestamp of the event that happened first
     '''
     t1 = datetime.strptime(results[0][1], "%Y-%m-%d %H:%M:%S.%f")
     minT = results[0][1]
@@ -81,8 +81,10 @@ def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru):
         mftArray        - The mft array
         userAssist      - The user assist array
         recents         - The recents array
+        lastvisitedmru  - The lastvisitedmru array
+        runmru          - The runmru array
+        @eventArray     - Returns an Array that hold all the evidence found
     '''
-    
     results = []
     cnt = 0
 

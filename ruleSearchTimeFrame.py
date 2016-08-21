@@ -92,22 +92,18 @@ def event(results):
 
 def searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisitedmru, runmru):
     ''' Find every timestamp and info that has to do with the name argument
-        name            - The name of the file to search
-        mftArray        - The mft array
-        userAssist      - The user assist array
-        recents         - The recents array
+        mintime,maxtime     - The minimum/maxmum time provided by the user
+        mftArray            - The mft array
+        userAssist          - The user assist array
+        recents             - The recents array
+        lastvisitedmru      - The lastvisitedmru array
+        runmru              - The runmru array
+        @eventArray         - Returns an Array that hold all the evidence found
     '''    
     results = []
     checkresults = []
     cnt = 0
-    
-    print userAssist
-    print
-    print lastvisitedmru
-    print
-    print runmru
-    
-    
+
     if lastvisitedmru != []:
         checkresults = registrySpots(lastvisitedmru)
         for i in xrange(len(checkresults)):

@@ -10,6 +10,7 @@ import sys, time, os, re
 import pytsk3
 import pyewf
 import analyzeRegistry
+import rules
 
 counter = 1
 
@@ -192,6 +193,7 @@ def main():
 
     #Rules
     print '[*] Starting Rule process'
+    rules.main()
 
 if __name__ == "__main__":
     main()
