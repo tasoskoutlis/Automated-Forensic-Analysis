@@ -38,32 +38,6 @@ def registrySpots(array):
     return eventArray 
     
 
-def sortRecents(recents):
-    ''' Parse all timestamps in the results array and store them in another array in a descending order
-        results            - contains all the timestamps that has to do with the specific file we are searching
-        @eventArray        - return array in descending order based on timestamps
-    '''
-    results = []
-    
-    for i in xrange(len(recents)):
-        if recents[i][2] == 'RootMRU':
-            results.append(recents[i])
-    
-    eventArray = []
-    minV = [] 
-    while(results):
-        t1 = int(results[0][3])
-        minV = [t1, 0]
-        for i in xrange(len(results)):
-            t2 = int(results[i][3])
-            if t2 < t1:
-                t1 = t2
-                minV = [t2, i]
-        eventArray.append(results[minV[1]])    
-        results.pop(minV[1])
-            
-    return eventArray 
-
 def event(results):
     ''' Parse all timestamps in the results array and store them in another array in a descending order
         results            - contains all the timestamps that has to do with the specific file we are searching
@@ -124,7 +98,7 @@ def searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisited
                 results[cnt].append(checkresults[i][1])
                 cnt += 1 
     
-    #Search for a specific file name in the MFT table
+    #Search in the User Assist file
     for i in xrange(len(userAssist)):
         timestamp = userAssist[i][3]
         if insideTimeframe(timestamp, mintime, maxtime):
@@ -142,10 +116,21 @@ def searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisited
     print results
     print
     
+    #Search in RecentDocs file
+    for i in xrange(len(recents)):
+        if recents[i][2] == 'RootMRU':
+            timestamp = recents[i][0]
+            if insideTimeframe(timestamp, mintime, maxtime):
+                results.append([]) 
+                #format is [Name RecentDocs, timestamp] - [text.txt RecentDocs, 2015-01-02 22:49:35.829651]
+                filename = recents[i][4] + ' ' + recents[0][1]
+                #Store results to array
+                results[cnt].append(filename)
+                results[cnt].append(recents[i][0])
+                cnt += 1
+
     results = event(results)
-    
-    print sortRecents(recents)
-    print
+
     print results
     
     print len(results)

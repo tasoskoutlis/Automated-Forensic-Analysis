@@ -6,14 +6,15 @@ https://github.com/williballenthin/python-registry/blob/master/samples/forensica
 from Registry import Registry
 import time, binascii
 import os
+from datetime import datetime,timedelta
 
 #Create an empty file every time the program runs
-f = open('forcsv/preliminary.csv', 'w')
+f = open('files/preliminary.csv', 'w')
 f.close()
 
 #Store information to csv
 def writeToCSV(value):
-    f = open('forcsv/preliminary.csv', 'a')
+    f = open('files/preliminary.csv', 'a')
     for row in value:
         f.write('%s;' % row)
     f.write('\n')
@@ -40,17 +41,17 @@ def systemInfo():
             #Store to csv
             valArray = [value.name(), value.value()]
             writeToCSV(valArray)
-    '''       
+    
     key = r.open(control_set + "\\Control\\Windows")
     for value in key.values():
         if value.name() == 'ShutdownTime':
-            #print value.name() + " = " + time.strftime('%A %d %B %Y %H:%M:%S (UTC)', time.gmtime(value.value()))
-            #print (value.raw_data())
-            #print value.data()
             val = (binascii.hexlify(value.value()),16)[0]
-            print datetime.fromtimestamp(val)
-            #print value.name() + " = " + time.strftime('%A %f %B %Y %H:%M:%S (UTC)', time.gmtime(value.value()))
-    '''
+            val = val[14:] + val[12:14] + val[10:12] + val[8:10] + val[6:8] + val[4:6] + val[2:4] + val[0:2]
+            us = int(val,16) / 10.
+            date =  datetime(1601,1,1) + timedelta(microseconds=us)
+            #Store to csv
+            valArray = [value.name(), date]
+            writeToCSV(valArray)
             
     key = r.open(control_set + "\\Control\\TimeZoneInformation")
     for value in key.values():
@@ -69,11 +70,11 @@ def systemInfo():
     #os.system('python regparse.py --plugin sysinfo --hives files/SYSTEM files/SOFTWARE --format "{{ last_write }}|{{ os_info }}|{{ installed_date }}|{{ registered_owner }}" > csv/sysinfo.csv')
     
     try: 
-        os.system('python regparse.py --plugin services --hives files/SYSTEM --format "{{ last_write }}|{{ key_name }}|{{ image_path }}|{{ type_name }}|{{ display_name }}|{{ start_type }}|{{ service_dll }}" > forcsv/services.csv')
+        os.system('python regparse.py --plugin services --hives files/SYSTEM --format "{{ last_write }}|{{ key_name }}|{{ image_path }}|{{ type_name }}|{{ display_name }}|{{ start_type }}|{{ service_dll }}" > files/services.csv')
     except:
         print 'Services list not found'
     try: 
-        os.system('python regparse.py --plugin usbstor --hives files/SYSTEM --format "{{ last_write }}|{{ sub_key }}|{{ runcount }}|{{ windate }}|{{ data }}" > forcsv/usb.csv')
+        os.system('python regparse.py --plugin usbstor --hives files/SYSTEM --format "{{ last_write }}|{{ sub_key }}|{{ runcount }}|{{ windate }}|{{ data }}" > files/usb.csv')
     except:
         print 'Usb list not found'
 
@@ -146,7 +147,7 @@ def softwareInfo():
     valArray = []
     writeToCSV(valArray)
     
-    for key in key.subkeys():
+    for key in key.subkeys():            
         #Store to csv
         valArray = [key.name()]
         writeToCSV(valArray)
@@ -160,11 +161,38 @@ def softwareInfo():
                 #Store to csv
                 valArray = [value.name(), value.value()]
                 writeToCSV(valArray)
+            
+        '''
+        Go to SAM hive and extract user information (last logon time, last password reset, etc.) if he is a user (RID >= 1000)
+        '''
+        #From SID S-1-5-21-352618641-2549960286-1883651073-1000 keep 1000
+        sidValue = int(key.name()[key.name().rfind('-')+1:])
+        if sidValue >= 1000:
+            fSAM = open("files/SAM", "rb")
+            rSAM = Registry.Registry(fSAM)
+            hexvalue = '{0:x}'.format(sidValue)
+    
+            keySAM = rSAM.open("SAM\\Domains\\Account\\Users\\00000" + hexvalue)
+            for value in keySAM.values():
+                if value.name() == 'F':
+                    valuesArray = [value.value()[8:16], value.value()[24:32], value.value()[32:40], value.value()[40:48]]
+                    namesArray = ['Last Logon Time', 'Last Password Reset', 'Account Expiration Date', 'Last Failed Logon Date']
+                    for i in xrange(len(valuesArray)):
+                        val = (binascii.hexlify(valuesArray[i]),16)[0]   
+                        val = val[14:] + val[12:14] + val[10:12] + val[8:10] + val[6:8] + val[4:6] + val[2:4] + val[0:2]
+                        us = int(val,16) / 10.
+                        date =  datetime(1601,1,1) + timedelta(microseconds=us)
+                        #Store to csv
+                        valArray = [namesArray[i], date]
+                        writeToCSV(valArray)  
         #Store to csv
         valArray = []
         writeToCSV(valArray)
 
-    #os.system('python regparse.py --plugin winlogon --hives files/SOFTWARE --format "{{last_write}}|{{ key_name }}|{{ value }}|{{ data }}" > forcsv/winlogon.csv')
+'''
+Extract information from SAM Hive
+'''
+
 
 
 '''
@@ -192,24 +220,24 @@ def ntuserInfo(name):
     '''        
     try: 
         os.system('python regparse.py --plugin userassist --hives files/NTUSER.DAT \
-                                                --format "{{ last_write }}|{{ sub_key }}|{{ runcount }}|{{ windate }}|{{ data }}" > forcsv/userassist' + '_' + name + '.csv')
+                                                --format "{{ last_write }}|{{ sub_key }}|{{ runcount }}|{{ windate }}|{{ data }}" > files/userassist' + '_' + name + '.csv')
     except:
         print 'No UserAssist information for NTUSER.DAT' + name
 
     try: 
         os.system('python regparse.py --plugin runmru --hives files/NTUSER.DAT \
-                                                --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > forcsv/mru' + '_' + name + '.csv')
+                                                --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > files/mru' + '_' + name + '.csv')
     except:
         print 'No RunMRU information for NTUSER.DAT' + name
 
     try: 
         os.system('python regparse.py --plugin recentdocs --hives files/NTUSER.DAT \
-                                                --format "{{last_write}}|{{key_name}}|{{key}}|{{value}}|{{data}}" > forcsv/recent' + '_' + name + '.csv')
+                                                --format "{{last_write}}|{{key_name}}|{{key}}|{{value}}|{{data}}" > files/recent' + '_' + name + '.csv')
     except:
         print 'No RecentDocs information for NTUSER.DAT' + name
         
     try: 
         os.system('python regparse.py --plugin lastvisitedmru --hives files/NTUSER.DAT \
-                                                --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > forcsv/lastvisitedmru' + '_' + name + '.csv')
+                                                --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > files/lastvisitedmru' + '_' + name + '.csv')
     except:
         print 'No LastVisitedMRU information for NTUSER.DAT' + name

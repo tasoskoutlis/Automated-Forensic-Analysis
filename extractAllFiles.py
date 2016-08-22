@@ -172,24 +172,31 @@ def parseImage(diskPath):
     
 
 def main(): 
-        
-    diskPath = '/Volumes/Elements/York MSc Cyber Security (CYB)/FACI Exercises/Exercises/Forensic_1/Forensic_workshop_1.EO1'
-    #diskPath = '/Volumes/Elements/York MSc Cyber Security (CYB)/FACI Exercises/Exercises/Assessment/Image/Money-transfer.EO1'
-    #diskPath = '/Users/anastasioskoutlis/Developer/York MSc Cyber Security (CYB)/Cyber Security Individual Project (PCYB) /Scenarios/1/nps-2008-jean.E01'
-    #diskPath = '/Users/anastasioskoutlis/Developer/York MSc Cyber Security (CYB)/Cyber Security Individual Project (PCYB)/Scenarios/3/Internet_Foreniscs_IE10_image.ad1'
 
-    #Print partion information for every partition of the image given
-    parseImage(diskPath)
+    rule = int(raw_input('Do you want to run the complete process (press 1) or just run the rules (press 2) ?'))
     
-    #Extract MFT information to .csv
-    print '[*] Extracting MFT information to csv'
-    os.system('analyzeMFT.py -f forfiles/MFT -o forcsv/mft.csv')
-
-    #Extract Registry information to .csv
-    print '[*] Extracting Registry information to csv'
-    analyzeRegistry.systemInfo()
-    analyzeRegistry.softwareInfo()
-    analyzeRegistry.deviceInfo()
+    #Search for a specific time frame
+    if rule == 1:   
+           
+        #diskPath = raw_input('Provide the path of the disk image: ')
+          
+        diskPath = '/Volumes/Elements/York MSc Cyber Security (CYB)/FACI Exercises/Exercises/Forensic_1/Forensic_workshop_1.EO1'
+        #diskPath = '/Volumes/Elements/York MSc Cyber Security (CYB)/FACI Exercises/Exercises/Assessment/Image/Money-transfer.EO1'
+        #diskPath = '/Users/anastasioskoutlis/Developer/York MSc Cyber Security (CYB)/Cyber Security Individual Project (PCYB) /Scenarios/1/nps-2008-jean.E01'
+        #diskPath = '/Users/anastasioskoutlis/Developer/York MSc Cyber Security (CYB)/Cyber Security Individual Project (PCYB)/Scenarios/3/Internet_Foreniscs_IE10_image.ad1'
+    
+        #Print partion information for every partition of the image given
+        parseImage(diskPath)
+        
+        #Extract MFT information to .csv
+        print '[*] Extracting MFT information to csv'
+        os.system('analyzeMFT.py -f files/MFT -o files/mft.csv')
+    
+        #Extract Registry information to .csv
+        print '[*] Extracting Registry information to csv'
+        analyzeRegistry.systemInfo()
+        analyzeRegistry.softwareInfo()
+        analyzeRegistry.deviceInfo()
 
     #Rules
     print '[*] Starting Rule process'

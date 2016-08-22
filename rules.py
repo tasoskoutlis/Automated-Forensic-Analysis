@@ -57,7 +57,7 @@ def parsers(arrays):
     runmru = []
     
     #Read information from MFT
-    f = open('forcsv/mft.csv', 'rb')
+    f = open('files/mft.csv', 'rb')
     mftArray = parseMFT(f)
     f.close()
     

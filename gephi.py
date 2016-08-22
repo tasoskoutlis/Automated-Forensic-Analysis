@@ -6,7 +6,7 @@ import ruleSearchFile
 from gdflib import GdfEntries, Node
 from gdflib import String
 
-f = open('gephi.gdf', 'w')
+f = open('files/gephi.gdf', 'w')
 
 class Evidence(Node):
     filename = String(default = 'Filename', required = True)

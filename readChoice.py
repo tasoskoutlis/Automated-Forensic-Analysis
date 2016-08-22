@@ -29,7 +29,7 @@ def options():
             print 'Error!! Minimum timestamp is bigger than maximum timestamp!!'
             exit()
 
-        userassist = raw_input('Provide the path of the User Assist csv file: ')    
+        userassist = raw_input('Provide the path of the User Assist csv file (e.x. files/userassist_student.csv): ')    
         recent = raw_input('Provide the path of the RecentDocs csv file: ')    
         lastvisitedmru = raw_input('Provide the path of the lastVisitedMRU csv file: ')    
         mru = raw_input('Provide the path of the RunMRU csv file: ')   
@@ -38,7 +38,7 @@ def options():
         
     #Search a specific user 
     elif rule == 2:
-        userassist = raw_input('Provide the path of the User Assist csv file: ')    
+        userassist = raw_input('Provide the path of the User Assist csv file (e.x. files/userassist_student.csv): ')    
         recent = raw_input('Provide the path of the RecentDocs csv file: ')    
         lastvisitedmru = raw_input('Provide the path of the lastVisitedMRU csv file: ')    
         mru = raw_input('Provide the path of the RunMRU csv file: ')    
