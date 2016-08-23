@@ -79,7 +79,7 @@ def systemInfo():
         print 'Usb list not found'
 
 '''
-Extract information from SOFTWARE Hive
+Extract information from SOFTWARE and SAM Hive
 '''
 def softwareInfo():
     f = open("files/SOFTWARE", "rb")
@@ -147,11 +147,19 @@ def softwareInfo():
     valArray = []
     writeToCSV(valArray)
     
+    users = []
     for key in key.subkeys():            
         #Store to csv
         valArray = [key.name()]
         writeToCSV(valArray)
         for value in key.values():
+            if value.name() == 'ProfileImagePath':
+                #From C:/Users/student keep student
+                username = value.value()[value.value().rfind('\\')+1:]
+                #From SID S-1-5-21-352618641-2549960286-1883651073-1000 keep 1000 (RID = 1000)
+                rid = int(key.name()[key.name().rfind('-')+1:])
+                users.append(username)
+                users.append(int(rid))
             if value.name() == 'Sid':
                 valBin = (binascii.hexlify(value.value()),16)[0]
                 #Store to csv
@@ -184,16 +192,18 @@ def softwareInfo():
                         date =  datetime(1601,1,1) + timedelta(microseconds=us)
                         #Store to csv
                         valArray = [namesArray[i], date]
-                        writeToCSV(valArray)  
+                        writeToCSV(valArray) 
+            for i in range(0, len(users), 2):
+                if users[i+1] == sidValue:
+                    keySAM = rSAM.open("SAM\\Domains\\Account\\Users\\Names")
+                    for key in keySAM.subkeys():
+                        if key.name() == users[i]:
+                            #Store to csv
+                            valArray = ['Account Creation Time', key.timestamp()]
+                            writeToCSV(valArray) 
         #Store to csv
         valArray = []
         writeToCSV(valArray)
-
-'''
-Extract information from SAM Hive
-'''
-
-
 
 '''
 Extract device Information
@@ -219,25 +229,25 @@ def ntuserInfo(name):
         name            - The name of the user
     '''        
     try: 
-        os.system('python regparse.py --plugin userassist --hives files/NTUSER.DAT \
-                                                --format "{{ last_write }}|{{ sub_key }}|{{ runcount }}|{{ windate }}|{{ data }}" > files/userassist' + '_' + name + '.csv')
+        os.system('python regparse.py --plugin userassist --hives files/NTUSER.DAT_' + name + ' \
+                                                --format "{{ last_write }}|{{ sub_key }}|{{ runcount }}|{{ windate }}|{{ data }}" > files/userassist_' + name + '.csv')
     except:
-        print 'No UserAssist information for NTUSER.DAT' + name
+        print 'No UserAssist information for NTUSER.DAT_' + name
 
     try: 
-        os.system('python regparse.py --plugin runmru --hives files/NTUSER.DAT \
-                                                --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > files/mru' + '_' + name + '.csv')
+        os.system('python regparse.py --plugin runmru --hives files/NTUSER.DAT_' + name + ' \
+                                                --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > files/mru_' + name + '.csv')
     except:
-        print 'No RunMRU information for NTUSER.DAT' + name
+        print 'No RunMRU information for NTUSER.DAT_' + name
 
     try: 
-        os.system('python regparse.py --plugin recentdocs --hives files/NTUSER.DAT \
-                                                --format "{{last_write}}|{{key_name}}|{{key}}|{{value}}|{{data}}" > files/recent' + '_' + name + '.csv')
+        os.system('python regparse.py --plugin recentdocs --hives files/NTUSER.DAT_' + name + ' \
+                                                --format "{{last_write}}|{{key_name}}|{{key}}|{{value}}|{{data}}" > files/recent_' + name + '.csv')
     except:
-        print 'No RecentDocs information for NTUSER.DAT' + name
+        print 'No RecentDocs information for NTUSER.DAT_' + name
         
     try: 
-        os.system('python regparse.py --plugin lastvisitedmru --hives files/NTUSER.DAT \
-                                                --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > files/lastvisitedmru' + '_' + name + '.csv')
+        os.system('python regparse.py --plugin lastvisitedmru --hives files/NTUSER.DAT_' + name + ' \
+                                                --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > files/lastvisitedmru_' + name + '.csv')
     except:
-        print 'No LastVisitedMRU information for NTUSER.DAT' + name
+        print 'No LastVisitedMRU information for NTUSER.DAT_' + name

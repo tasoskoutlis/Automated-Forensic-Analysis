@@ -5,10 +5,9 @@ import datetime
 
 def options():
     rule = int(raw_input('Choose rule to run: \n\
-    1 - Search for a specific file and find all connections \n\
-    2 - Search for a specific time frame and find all connections \n\
-    3 - Search for a specific user and find all connections \n\
-    4 - Search everything '))
+    1 - Search for a specific time frame and find all connections \n\
+    2 - Search for a specific user and find all connections \n\
+    3 - Search for a specific file and find all connections \n'))
     
     #Search for a specific time frame
     if rule == 1:
@@ -30,18 +29,18 @@ def options():
             exit()
 
         userassist = raw_input('Provide the path of the User Assist csv file (e.x. files/userassist_student.csv): ')    
-        recent = raw_input('Provide the path of the RecentDocs csv file: ')    
-        lastvisitedmru = raw_input('Provide the path of the lastVisitedMRU csv file: ')    
-        mru = raw_input('Provide the path of the RunMRU csv file: ')   
+        recent = raw_input('Provide the path of the RecentDocs csv file (e.x. files/recent_student.csv): ')    
+        lastvisitedmru = raw_input('Provide the path of the lastVisitedMRU csv file (e.x. files/lastvisitedmru_student.csv): ')    
+        mru = raw_input('Provide the path of the RunMRU csv file (e.x. files/mru_student.csv): ')   
         
         return [1, userassist, recent, lastvisitedmru, mru, mintime, maxtime]
         
     #Search a specific user 
     elif rule == 2:
         userassist = raw_input('Provide the path of the User Assist csv file (e.x. files/userassist_student.csv): ')    
-        recent = raw_input('Provide the path of the RecentDocs csv file: ')    
-        lastvisitedmru = raw_input('Provide the path of the lastVisitedMRU csv file: ')    
-        mru = raw_input('Provide the path of the RunMRU csv file: ')    
+        recent = raw_input('Provide the path of the RecentDocs csv file (e.x. files/recent_student.csv): ')    
+        lastvisitedmru = raw_input('Provide the path of the lastVisitedMRU csv file (e.x. files/lastvisitedmru_student.csv): ')    
+        mru = raw_input('Provide the path of the RunMRU csv file (e.x. files/mru_student.csv): ')   
     
         return [2, userassist, recent, lastvisitedmru, mru]
         
@@ -50,10 +49,10 @@ def options():
         print 'If a .csv is empty just press enter!'
         filename = raw_input('Provide the name of the file to search for (e.x. RecycleTestDocument.rtf): ')    
         userassist = raw_input('Provide the path of the User Assist csv file (e.x. files/userassist_student.csv): ')    
-        recent = raw_input('Provide the path of the RecentDocs csv file: ')    
-        lastvisitedmru = raw_input('Provide the path of the lastVisitedMRU csv file: ')    
-        mru = raw_input('Provide the path of the RunMRU csv file: ')    
-    
-        return [3, userassist, recent, lastvisitedmru, mru, filename]
+        ntuserPath = raw_input('Provide the path of the NTUSER.DAT file (e.x. files/NTUSER.DAT_student): ')    
+        lastvisitedmru = []
+        mru = []
+        
+        return [3, userassist, recent, lastvisitedmru, mru, filename, ntuserPath]
 
     

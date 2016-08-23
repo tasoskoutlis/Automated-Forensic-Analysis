@@ -5,9 +5,19 @@ import time, binascii
 import os
 from datetime import datetime,timedelta
 
-f = open("files/SAM", "rb")
+f = open("files/NTUSER.DAT_student", "rb")
 r = Registry.Registry(f)
 
+key = r.open("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU")
+for subkey in key.subkeys():
+    print subkey.name()
+    for value in subkey.values():
+        print value.name()
+        if 'RecycleTestDocument.rtf' in value.value():
+            print 'Yessssssss' 
+            print subkey.timestamp()
+
+'''
 user = 1000
 hexvalue = '{0:x}'.format(user)
 
@@ -25,7 +35,8 @@ for value in key.values():
            
 key = r.open("SAM\\Domains\\Account\\Users\\Names")
 for value in key.subkeys():
-    print value.raw_data()
+    print value.timestamp()
+    print value.name()
             
               
 f = open("files/SOFTWARE", "rb")
@@ -37,3 +48,4 @@ for key in key.subkeys():
     sidValue = key.name()[key.name().rfind('-')+1:]
     if int(sidValue) >= 1000:
         print sidValue
+'''

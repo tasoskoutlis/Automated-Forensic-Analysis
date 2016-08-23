@@ -5,6 +5,8 @@
 '''
 #!/usr/bin/env python
 from datetime import datetime
+from Registry import Registry
+
 
 def checkTimestamps(timestamp1, timestamp2):
     ''' Check two timestamps
@@ -75,7 +77,7 @@ def event(results):
     return eventArray
 
 
-def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru):
+def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru, ntuserPath):
     ''' Find every timestamp and info that has to do with the name argument
         name            - The name of the file to search
         mftArray        - The mft array
@@ -115,7 +117,7 @@ def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru):
                 filename = userAssist[i][4]
                 #From {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Accessories\Wordpad.lnk store Wordpad.lnk
                 filename = filename[filename.rfind('\\')+1:]            
-                results[cnt].append(filename)
+                results[cnt].append(filename + ' UserAssist')                
                 results[cnt].append(userAssist[i][3])
                 cnt += 1
                 break
@@ -135,9 +137,22 @@ def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru):
             filename = userAssist[i][4]
             #From {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Accessories\Wordpad.lnk store Wordpad.lnk
             filename = filename[filename.rfind('\\')+1:]            
-            results[cnt].append(filename)                
+            results[cnt].append(filename + ' UserAssist')                
             results[cnt].append(userAssist[i][3])
             cnt += 1
+
+    #Look into OpenSavePidlMRU now because we didnt know the filename we are looking for in the analysis process
+    f = open(ntuserPath, "rb")
+    r = Registry.Registry(f)
+    
+    key = r.open("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU")
+    for subkey in key.subkeys():
+        for value in subkey.values():
+            if name in value.value():
+                results.append([]) 
+                results[cnt].append('RecycleTestDocument.rtf OpenSavePidlMRU ' + subkey.name())                
+                results[cnt].append(str(subkey.timestamp()))
+                cnt += 1
 
     #Run results of 1st Rule
     eventArray = event(results)

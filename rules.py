@@ -136,7 +136,8 @@ def main():
     elif ruleOptionsArray[0] == 3:
         
         filename = ruleOptionsArray[5]
-        results = ruleSearchFile.searchFile(filename, mftArray, userAssist, recents, lastvisitedmru, runmru)
+        ntuserPath = ruleOptionsArray[6]
+        results = ruleSearchFile.searchFile(filename, mftArray, userAssist, recents, lastvisitedmru, runmru, ntuserPath)
         
         #Search the Recycle Bin entries for information
         recycleBin = ruleSearchRecycleBin.searchRecycleBin(mftArray)
