@@ -97,13 +97,14 @@ def parsers(arrays):
     #Read information from Recent
     if runmruPath != '':
         f = open(runmruPath, 'rb')
-        runmru = parseRegistry(f)
-        f.close()
+        if 'There are no MRUList values.' not in f:
+            runmru = parseRegistry(f)
         
-        #Do some sanitization
-        for i in xrange(len(runmru)):
-            runmru[i][4] = runmru[i][4].rstrip('\n')
-    
+            #Do some sanitization
+            for i in xrange(len(runmru)):
+                runmru[i][4] = runmru[i][4].rstrip('\n')
+        f.close()
+
     #Arrays will contain information or empty
     return mftArray, userAssist, recents, lastvisitedmru, runmru
  
@@ -140,7 +141,7 @@ def main():
         results = ruleSearchFile.searchFile(filename, mftArray, userAssist, recents, lastvisitedmru, runmru, ntuserPath)
         
         #Search the Recycle Bin entries for information
-        recycleBin = ruleSearchRecycleBin.searchRecycleBin(mftArray)
+        #recycleBin = ruleSearchRecycleBin.searchRecycleBin(mftArray)
     
         #print recycleBin
             

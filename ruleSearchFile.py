@@ -6,6 +6,7 @@
 #!/usr/bin/env python
 from datetime import datetime
 from Registry import Registry
+import ruleSearchRecycleBin
 
 
 def checkTimestamps(timestamp1, timestamp2):
@@ -13,7 +14,6 @@ def checkTimestamps(timestamp1, timestamp2):
         timestamp 1,2      - time and date of events to compare
         @return            - return 1 if they match, based on a time bracket, and 0 if the don't
     '''
-    
     t1 = datetime.strptime(timestamp1, "%Y-%m-%d %H:%M:%S.%f")
     t2 = datetime.strptime(timestamp2, "%Y-%m-%d %H:%M:%S.%f")
                 
@@ -27,7 +27,6 @@ def timeCreated(timestamp1, timestamp2):
         timestamp 1,2      - time and date of events to compare
         @return            - return 1 if they match, based on a time bracket, and 0 if the don't
     '''
-    
     t1 = datetime.strptime(timestamp1, "%Y-%m-%d %H:%M:%S.%f")
     t2 = datetime.strptime(timestamp2, "%Y-%m-%d %H:%M:%S.%f")
                     
@@ -56,7 +55,6 @@ def event(results):
         results            - contains all the timestamps that has to do with the specific file we are searching
         @eventArray        - return array in descending order based on timestamps
     '''
-
     eventArray = []
     minV = [] 
     while(results):
@@ -82,14 +80,12 @@ def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru, ntus
         name            - The name of the file to search
         mftArray        - The mft array
         userAssist      - The user assist array
-        recents         - The recents array
-        lastvisitedmru  - The lastvisitedmru array
-        runmru          - The runmru array
+        ntuserPath      - The NTUSER.DAT file
         @eventArray     - Returns an Array that hold all the evidence found
     '''
     results = []
     cnt = 0
-
+    
     #Search for a specific file name in the MFT table
     for i in xrange(len(mftArray)):
         if name in mftArray[i][7]:
@@ -102,6 +98,9 @@ def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru, ntus
                 results[cnt].append(filename + ' ' + mftArray[0][j])
                 results[cnt].append(mftArray[i][j])
                 cnt += 1
+
+    #Search in Recycle Bin if the file was deleted by looking in the times of the files in the RecycleBin
+    results, cnt = ruleSearchRecycleBin.searchRecycleBin(mftArray, results, cnt)
 
     #Search in user assist to find the programs used based on the file's timestamps
     for i in xrange(len(userAssist)):
@@ -150,10 +149,21 @@ def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru, ntus
         for value in subkey.values():
             if name in value.value():
                 results.append([]) 
-                results[cnt].append('RecycleTestDocument.rtf OpenSavePidlMRU ' + subkey.name())                
+                #Format is [RecycleTestDocument.rtf OpenSavePidlMRU rtf, 1601-01-01 00:00:00]
+                results[cnt].append(name + ' OpenSavePidlMRU ' + subkey.name())                
                 results[cnt].append(str(subkey.timestamp()))
                 cnt += 1
-
+    f.close()
+    
+    #Search in the RunMRU file
+    if runmru != []:
+        for i in xrange(len(runmru)):
+            if name in runmru[i][4]:
+                results.append([]) 
+                results[cnt].append(runmru[i][4] + ' RunMRU')
+                results[cnt].append(str(runmru[i][0]))
+                cnt += 1 
+    
     #Run results of 1st Rule
     eventArray = event(results)
         

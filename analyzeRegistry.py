@@ -65,10 +65,8 @@ def systemInfo():
             #Store to csv
             valArray = [value.name(), 'Year', year, 'Month', month, 'Day', day, 'Hour', hour, 'Day of the Week', dayOftheWeek]
             writeToCSV(valArray)
-            
-    #Do not need the sysinfo
-    #os.system('python regparse.py --plugin sysinfo --hives files/SYSTEM files/SOFTWARE --format "{{ last_write }}|{{ os_info }}|{{ installed_date }}|{{ registered_owner }}" > csv/sysinfo.csv')
     
+    f.close()
     try: 
         os.system('python regparse.py --plugin services --hives files/SYSTEM --format "{{ last_write }}|{{ key_name }}|{{ image_path }}|{{ type_name }}|{{ display_name }}|{{ start_type }}|{{ service_dll }}" > files/services.csv')
     except:
@@ -147,6 +145,7 @@ def softwareInfo():
     valArray = []
     writeToCSV(valArray)
     
+    #users array keeps track of the users in the system [user1, rid=1000, user2, rid=1001,...]
     users = []
     for key in key.subkeys():            
         #Store to csv
@@ -179,12 +178,21 @@ def softwareInfo():
             fSAM = open("files/SAM", "rb")
             rSAM = Registry.Registry(fSAM)
             hexvalue = '{0:x}'.format(sidValue)
-    
+            
+            for i in range(0, len(users), 2):
+                if users[i+1] == sidValue:
+                    keySAM = rSAM.open("SAM\\Domains\\Account\\Users\\Names")
+                    for key in keySAM.subkeys():
+                        if key.name() == users[i]:
+                            #Store to csv
+                            valArray = ['Account Creation Time', key.timestamp()]
+                            writeToCSV(valArray)
+
             keySAM = rSAM.open("SAM\\Domains\\Account\\Users\\00000" + hexvalue)
             for value in keySAM.values():
                 if value.name() == 'F':
-                    valuesArray = [value.value()[8:16], value.value()[24:32], value.value()[32:40], value.value()[40:48]]
-                    namesArray = ['Last Logon Time', 'Last Password Reset', 'Account Expiration Date', 'Last Failed Logon Date']
+                    valuesArray = [value.value()[8:16], value.value()[24:32], value.value()[40:48]]
+                    namesArray = ['Last Logon Time', 'Last Password Reset', 'Last Failed Logon Date']
                     for i in xrange(len(valuesArray)):
                         val = (binascii.hexlify(valuesArray[i]),16)[0]   
                         val = val[14:] + val[12:14] + val[10:12] + val[8:10] + val[6:8] + val[4:6] + val[2:4] + val[0:2]
@@ -193,18 +201,16 @@ def softwareInfo():
                         #Store to csv
                         valArray = [namesArray[i], date]
                         writeToCSV(valArray) 
-            for i in range(0, len(users), 2):
-                if users[i+1] == sidValue:
-                    keySAM = rSAM.open("SAM\\Domains\\Account\\Users\\Names")
-                    for key in keySAM.subkeys():
-                        if key.name() == users[i]:
-                            #Store to csv
-                            valArray = ['Account Creation Time', key.timestamp()]
-                            writeToCSV(valArray) 
+                #Case of password hint
+                if value.name() != 'F' and value.name() != 'V' and len(value.value()) < 40:
+                    #Store to csv
+                    valArray = [value.name(), value.value()]
+                    writeToCSV(valArray) 
+            fSAM.close()
         #Store to csv
         valArray = []
         writeToCSV(valArray)
-
+        f.close()
 '''
 Extract device Information
 '''   
@@ -222,6 +228,7 @@ def deviceInfo():
             #Store to csv
             valArray = [value.name(), value.value()]
             writeToCSV(valArray)
+    f.close()
 
 
 def ntuserInfo(name):

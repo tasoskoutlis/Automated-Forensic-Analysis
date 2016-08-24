@@ -49,9 +49,10 @@ def options():
         print 'If a .csv is empty just press enter!'
         filename = raw_input('Provide the name of the file to search for (e.x. RecycleTestDocument.rtf): ')    
         userassist = raw_input('Provide the path of the User Assist csv file (e.x. files/userassist_student.csv): ')    
-        ntuserPath = raw_input('Provide the path of the NTUSER.DAT file (e.x. files/NTUSER.DAT_student): ')    
-        lastvisitedmru = []
-        mru = []
+        ntuserPath = raw_input('Provide the path of the NTUSER.DAT file you are investigating (e.x. files/NTUSER.DAT_student): ')    
+        mru = raw_input('Provide the path of the RunMRU csv file (e.x. files/mru_student.csv): ')   
+        recent = ''
+        lastvisitedmru = ''
         
         return [3, userassist, recent, lastvisitedmru, mru, filename, ntuserPath]
 
