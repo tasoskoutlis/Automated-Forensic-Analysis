@@ -6,7 +6,7 @@ import ruleSearchFile
 from gdflib import GdfEntries, Node
 from gdflib import String
 
-f = open('files/gephi.gdf', 'w')
+f = open('files/gephi.gdf', 'wb')
 
 class Evidence(Node):
     filename = String(default = 'Filename', required = True)
@@ -37,3 +37,5 @@ def createGraph(results):
     print entities.dumps()
     f.write(entities.dumps())
     f.close()
+    
+    

@@ -1,0 +1,7 @@
+[Documentation]
+Plugin = sysinfo
+Author = Patrick Olsen
+Version = 0.5
+Reference = http://sysforensics.org
+PrintFields = "{{ last_write }}|{{ os_info }}|{{ installed_date }}|{{ registered_owner }}"
+Description = Parses the SOFTWARE and SYSTEM hive and returns system information.

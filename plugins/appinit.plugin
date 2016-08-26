@@ -1,0 +1,7 @@
+[Documentation]
+Plugin = appinit
+Author = Patrick Olsen
+Version = 0.1
+Reference = http://sysforensics.org
+PrintFields = "{{ last_write }}|{{ key }}|{{ loadapp_data }}|{{ appinit_data }}"
+Description = Parses the SOFTWARE hive and returns AppInitDLL entries.

@@ -1,0 +1,7 @@
+[Documentation]
+Plugin = bhos
+Author = Patrick Olsen
+Version = 0.3
+Reference = http://sysforensics.org
+PrintFields = "{{ clsids_lastwrite }}|{{ value }}|{{ inproc_lastwrite }}|{{ data }}"
+Description = Parses the SOFTWARE hive and returns Browser Helper Object entries.

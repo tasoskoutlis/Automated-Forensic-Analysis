@@ -1,0 +1,7 @@
+[Documentation]
+Plugin = runkeys
+Author = Patrick Olsen
+Version = 0.5
+Reference = http://sysforensics.org
+PrintFields = "{{ last_write }}|{{ key_name }}|{{ value }}|{{ data }}"
+Description = Parses the SOFTWARE and NTUSER hives and returns common auto run entries.

@@ -1,0 +1,7 @@
+[Documentation]
+Plugin = services
+Author = Patrick Olsen
+Version = 0.4
+Reference = http://sysforensics.org
+PrintFields = "{{ last_write }}|{{ key_name }}|{{ image_path }}|{{ type_name }}|{{ display_name }}|{{ start_type }}|{{ service_dll }}"
+Description = Parses the SYSTEM hive and returns service entries.

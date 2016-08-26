@@ -72,7 +72,7 @@ def systemInfo():
     except:
         print 'Services list not found'
     try: 
-        os.system('python regparse.py --plugin usbstor --hives files/SYSTEM --format "{{ last_write }}|{{ sub_key }}|{{ runcount }}|{{ windate }}|{{ data }}" > files/usb.csv')
+        os.system('python regparse.py --plugin usbstor --hives files/SYSTEM --format "{{ key_lastwrite }}|{{ key }}|{{ friendly_name }}|{{ unique_sn_lastwrite }}|{{ unique_sn }}" > files/usb.csv')
     except:
         print 'Usb list not found'
 
@@ -232,8 +232,8 @@ def deviceInfo():
 
 
 def ntuserInfo(name):
-    ''' The function will be called in the extractAllFiles.py after the storage of a NTUSER.DAT file
-        name            - The name of the user
+    ''' The function will be called in the pyAutoFA.py after the storage of a NTUSER.DAT file
+        name    - The name of the user
     '''        
     try: 
         os.system('python regparse.py --plugin userassist --hives files/NTUSER.DAT_' + name + ' \
@@ -255,6 +255,6 @@ def ntuserInfo(name):
         
     try: 
         os.system('python regparse.py --plugin lastvisitedmru --hives files/NTUSER.DAT_' + name + ' \
-                                                --format "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}" > files/lastvisitedmru_' + name + '.csv')
+                                                --format "{{last_write}}|{{key_name}}|{{key}}|{{value}}|{{data}}" > files/lastvisitedmru_' + name + '.csv')
     except:
         print 'No LastVisitedMRU information for NTUSER.DAT_' + name

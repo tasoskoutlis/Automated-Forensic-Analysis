@@ -114,6 +114,7 @@ def main():
     ruleOptionsArray = []
     results = []
     
+    #Ask the user which rule to run and to provide the csv paths
     ruleOptionsArray = readChoice.options()
     
     mftArray, userAssist, recents, lastvisitedmru, runmru = parsers(ruleOptionsArray)

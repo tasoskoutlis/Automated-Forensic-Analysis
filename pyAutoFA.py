@@ -123,7 +123,7 @@ def extraction(directory, pPath, pPathName):
                 outfile.write(filedata)
                 outfile.close()
                 
-            elif fname == 'NTUSER.DAT' and ('LocalService' not in outputPath) and ('NetworkService' not in outputPath):
+            elif fname == 'NTUSER.DAT' and ('LocalService' not in outputPath) and ('NetworkService' not in outputPath) and ('Default' not in outputPath):
                 print '[*]    Found NTUSER.DAT in %s ...Starting extraction process' % (outputPath)
                 substr = outputPath[outputPath.rfind('/')+1:]
 
@@ -180,10 +180,9 @@ def main():
            
         #diskPath = raw_input('Provide the path of the disk image: ')
           
-        diskPath = '/Volumes/Elements/York MSc Cyber Security (CYB)/FACI Exercises/Exercises/Forensic_1/Forensic_workshop_1.EO1'
-        #diskPath = '/Volumes/Elements/York MSc Cyber Security (CYB)/FACI Exercises/Exercises/Assessment/Image/Money-transfer.EO1'
-        #diskPath = '/Users/anastasioskoutlis/Developer/York MSc Cyber Security (CYB)/Cyber Security Individual Project (PCYB) /Scenarios/1/nps-2008-jean.E01'
-        #diskPath = '/Users/anastasioskoutlis/Developer/York MSc Cyber Security (CYB)/Cyber Security Individual Project (PCYB)/Scenarios/3/Internet_Foreniscs_IE10_image.ad1'
+        #diskPath = '/Volumes/Elements/York MSc Cyber Security (CYB)/FACI Exercises/Exercises/Forensic_1/Forensic_workshop_1.EO1'
+        diskPath = '/Volumes/Elements/York MSc Cyber Security (CYB)/FACI Exercises/Exercises/Assessment/Image/Money-transfer.EO1'
+        #diskPath = '/Users/anastasioskoutlis/Developer/York MSc Cyber Security (CYB)/Cyber Security Individual Project (PCYB) /Scenarios/2/disk.E01'
     
         #Print partion information for every partition of the image given
         parseImage(diskPath)

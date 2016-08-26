@@ -22,7 +22,7 @@ def insideTimeframe(timestamp, mintime, maxtime):
         
 
 def registrySpots(array):
-    ''' Parse all timestamps in the results array and store them in another array in a descending order
+    ''' Create an array that is easy to parse and check the evidence inside
         array              - contains all the timestamps that has to do with the specific file we are searching
         @eventArray        - return array in descending order based on timestamps
     '''
@@ -78,23 +78,25 @@ def searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisited
     checkresults = []
     cnt = 0
 
+    #Search in the LastVisitedMRU file
     if lastvisitedmru != []:
         checkresults = registrySpots(lastvisitedmru)
         for i in xrange(len(checkresults)):
             timestamp = checkresults[i][1]
             if insideTimeframe(timestamp, mintime, maxtime) == 1:
                 results.append([]) 
-                results[cnt].append(checkresults[i][0])
+                results[cnt].append(checkresults[i][0] + ' LastVisitedMRU')
                 results[cnt].append(checkresults[i][1])
                 cnt += 1
-                
+    
+    #Search in the RunMRU file
     if runmru != []:
         checkresults = registrySpots(runmru)
         for i in xrange(len(checkresults)):
             timestamp = checkresults[i][1]
             if insideTimeframe(timestamp, mintime, maxtime) == 1:
                 results.append([]) 
-                results[cnt].append(checkresults[i][0])
+                results[cnt].append(checkresults[i][0] + ' RunMRU')
                 results[cnt].append(checkresults[i][1])
                 cnt += 1 
     
@@ -108,17 +110,13 @@ def searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisited
             #From {7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}\\AccessData\\FTK Imager\\FTK Imager.exe store FTK Imager.exe
             filename = filenamePath[filenamePath.rfind('\\')+1:]
             #Store results to array
-            results[cnt].append(filename)
+            results[cnt].append(filename + ' UserAssist')
             results[cnt].append(userAssist[i][3])
             cnt += 1
-    
-    print
-    print results
-    print
-    
+        
     #Search in RecentDocs file
     for i in xrange(len(recents)):
-        if recents[i][2] == 'RootMRU':
+        if recents[i][2] != 'RootMRU':
             timestamp = recents[i][0]
             if insideTimeframe(timestamp, mintime, maxtime):
                 results.append([]) 
@@ -130,14 +128,6 @@ def searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisited
                 cnt += 1
 
     results = event(results)
-
-    print results
-    
-    print len(results)
-    '''
-    results holds all info about userassist,runmru and lastvisitedmru
-    recents holds info about recent
-    '''
     
     print '[*] Finished Search Time Frame Rule'
     

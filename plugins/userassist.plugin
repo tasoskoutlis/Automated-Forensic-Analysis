@@ -1,0 +1,7 @@
+[Documentation]
+Plugin = userassist
+Author = Modified by Patrick Olsen
+Version = 0.1
+Reference = http://registrydecoder.googlecode.com/svn/trunk/templates/template_files/user_assist.py
+PrintFields = "{{ last_write }}|{{ sub_key }}|{{ runcount }}|{{ windate }}|{{ data }}"
+Description = Parses the SOFTWARE hive and returns AppInitDLL entries.

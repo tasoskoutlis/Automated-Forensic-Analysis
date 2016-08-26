@@ -1,0 +1,7 @@
+[Documentation]
+Plugin = printall
+Author = Willi Ballenthin: Modified by Patrick Olsen
+Version = 0.2
+Reference = http://sysforensics.org
+PrintFields = "{{ key_path }}"
+Description = Parses the ANY hive(s) and returns all registry key path entries.

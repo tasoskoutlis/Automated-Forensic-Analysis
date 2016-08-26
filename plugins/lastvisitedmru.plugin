@@ -1,0 +1,7 @@
+[Documentation]
+Plugin = lastvisitedmru
+Author = Patrick Olsen
+Version = 0.1
+Reference = http://sysforensics.org
+PrintFields = ""
+Description = Parses NTUSER hive and returns LastVisitedMRU, LastVisitedPidlMRU and LastVisitedPidlMRULegacy entries.

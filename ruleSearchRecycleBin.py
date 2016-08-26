@@ -1,7 +1,5 @@
 '''
-1st Rule - Given a specific filename search every file in MFT to find information about it and extract every time information
-           Then look at the Registry information
-           Finally, store all info to an Array in descending order based on timestamp.
+Search into Recycle Bin folder
 '''
 #!/usr/bin/env python
 from datetime import datetime
@@ -20,9 +18,13 @@ def checkTimestamps(timestamp1, timestamp2):
     
     
 def searchRecycleBin(mftArray, results, cnt):
-    ''' Reads mft.csv file and extracts info to an array. Each row represents information about a file
-        f               - file
-        @eventArray     - return array with results
+    ''' Reads the mft.csv to find RecycleBin entries and then based on the timestamps of the evidence in the results 
+        array it looks if they have the same timestamps or their timestamp difference is in a 200 second time frame
+        mftArray    - MFT file
+        results     - Results array
+        cnt         - Counter that holds the number of entries in the results array
+        @results    - return array with results
+        @cnt        - return counter that holds the number of entries in the results array
     '''
     temp = results
     for i in xrange(len(mftArray)):
@@ -47,4 +49,3 @@ def searchRecycleBin(mftArray, results, cnt):
                         cnt += 1
                         break
     return results, cnt
-    

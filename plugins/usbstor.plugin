@@ -1,0 +1,7 @@
+[Documentation]
+Plugin = usbstor
+Author = Patrick Olsen
+Version = 0.2
+Reference = http://sysforensics.org
+PrintFields = "{{ key_lastwrite }}|{{ key }}|{{ friendly_name }}|{{ unique_sn_lastwrite }}|{{ unique_sn }}"
+Description = Parses the SYSTEM hive and returns Vendor, Make, Version and S/N USBstor entries.

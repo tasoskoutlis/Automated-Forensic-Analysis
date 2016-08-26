@@ -1,0 +1,7 @@
+[Documentation]
+Plugin = wordwheel
+Author = Patrick Olsen
+Version = 0.2
+Reference = http://sysforensics.org
+PrintFields = "{{ last_write }}|{{ key }}|{{ value }}|{{ data }}"
+Description = Parses the NTUSER hive and returns Wordwheel MRU entries.

@@ -1,0 +1,7 @@
+[Documentation]
+Plugin = runmru
+Author = Patrick Olsen
+Version = 0.2
+Reference = http://sysforensics.org
+PrintFields = "{{ last_write }}|{{ key }}|{{ mruorder }}|{{ value }}|{{ data }}"
+Description = Parses the NTUSER hive and returns RunMRU entries.

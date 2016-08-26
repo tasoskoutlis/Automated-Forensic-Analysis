@@ -1,0 +1,7 @@
+[Documentation]
+Plugin = searchit
+Author = Willi Ballenthin: Modified by Patrick Olsen
+Version = 0.2
+Reference = http://sysforensics.org
+PrintFields = "Use --format_file templates/searchit.html for now. Ver 0.2 will have this updated."
+Description = Parses the ANY hive and searches for the string your provided via --search.

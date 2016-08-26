@@ -1,0 +1,7 @@
+[Documentation]
+Plugin = knowndlls
+Author = Patrick Olsen
+Version = 0.4
+Reference = http://sysforensics.org
+PrintFields = "{{ last_write }}|{{ name }}|{{ value }}"
+Description = Parses the SYSTEM hive and returns Known DLLs.

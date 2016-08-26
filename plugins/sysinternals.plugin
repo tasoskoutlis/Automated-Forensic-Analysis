@@ -1,0 +1,7 @@
+[Documentation]
+Plugin = sysinternals
+Author = Patrick Olsen
+Version = 0.4
+Reference = http://sysforensics.org
+PrintFields = "{{ last_write }}|{{ key_name }}"
+Description = Parses the NTUSER hive and returns accepted EULA entries for Sysinternal tools that have run on the system.
