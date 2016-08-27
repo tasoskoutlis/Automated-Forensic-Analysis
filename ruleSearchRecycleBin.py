@@ -17,7 +17,7 @@ def checkTimestamps(timestamp1, timestamp2):
     return 0
     
     
-def searchRecycleBin(mftArray, results, cnt):
+def searchRecycleBin(name, mftArray, results, cnt):
     ''' Reads the mft.csv to find RecycleBin entries and then based on the timestamps of the evidence in the results 
         array it looks if they have the same timestamps or their timestamp difference is in a 200 second time frame
         mftArray    - MFT file
@@ -26,9 +26,11 @@ def searchRecycleBin(mftArray, results, cnt):
         @results    - return array with results
         @cnt        - return counter that holds the number of entries in the results array
     '''
+    namesignature = name.rsplit('.')[-1]
     temp = results
     for i in xrange(len(mftArray)):
-        if 'Recycle.Bin' in mftArray[i][7]:
+        #If it is a file in the recycle bin
+        if 'Recycle.Bin' in mftArray[i][7] and mftArray[i][3] == 'File':
             for k in range(8,12):
                 #check the file's timestamps
                 timestamp = mftArray[i][k]
@@ -37,15 +39,16 @@ def searchRecycleBin(mftArray, results, cnt):
                 except:
                     #It will hit the exception when it finds 1601-01-01 00:00:00
                     continue
-                #Check timestamps of existing appearances of the file we are investigating
-                for j in xrange(len(temp)):
-                    if checkTimestamps(timestamp, temp[j][1]) == 1 and mftArray[i][3] == 'File':
-                        results.append([])
-                        #format is ['path str_time, timestamp,...] - [text.txt Std Info Access Date, 2015-01-02 22:49:35.829651]
+                #Check timestamps of evidence in results array of the file we are investigating
+                for j in range(0, len(temp)):
+                    if checkTimestamps(timestamp, temp[j][1]) == 1:
                         #From /Users/student/Documents/RecycleTestDocument.rtf store RecycleTestDocument.rtf
-                        filename = mftArray[i][7][mftArray[i][7].rfind('/')+1:]
-                        results[cnt].append(filename + ' Recycle Bin ' + mftArray[0][k])
-                        results[cnt].append(timestamp)
-                        cnt += 1
-                        break
+                        filename = mftArray[i][7].rsplit('/')[-1]
+                        if filename.rsplit('.')[-1] == namesignature:
+                            results.append([])
+                            #format is ['path str_time, timestamp,...] - [text.txt Std Info Access Date, 2015-01-02 22:49:35.829651]
+                            results[cnt].append(filename + ' Recycle Bin ' + mftArray[0][k])
+                            results[cnt].append(timestamp)
+                            cnt += 1
+                            break
     return results, cnt

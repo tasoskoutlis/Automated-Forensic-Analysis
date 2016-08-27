@@ -5,6 +5,20 @@ import time, binascii
 import os
 from datetime import datetime,timedelta
 
+
+filename = '{0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}/Accessories/Wordpad.lnk'
+filesignature = filename.rsplit('/')[-1]
+
+
+print filesignature
+
+fie = 'wordpad21_ve3.exe'
+word = 'wordpad'
+
+if word.lower() in fie.lower():
+    print 'Yeeeeees'
+
+'''
 f = open("files/NTUSER.DAT_student", "rb")
 r = Registry.Registry(f)
 
@@ -17,7 +31,7 @@ for subkey in key.subkeys():
             print 'Yessssssss' 
             print subkey.timestamp()
 
-'''
+
 user = 1000
 hexvalue = '{0:x}'.format(user)
 

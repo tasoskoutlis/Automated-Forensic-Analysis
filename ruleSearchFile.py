@@ -7,6 +7,7 @@
 from datetime import datetime
 from Registry import Registry
 import ruleSearchRecycleBin
+import filesignatures
 
 
 def checkTimestamps(timestamp1, timestamp2):
@@ -85,26 +86,32 @@ def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru, ntus
     '''
     results = []
     cnt = 0
-    
+
+    #if name is test.txt keep test
+    searchName = name.rsplit('.')[0]
     #Search for a specific file name in the MFT table
     for i in xrange(len(mftArray)):
-        if name in mftArray[i][7]:
+        if searchName in mftArray[i][7]:
             filename = mftArray[i][7]          
             for j in range(8,12):
                 results.append([])
                 #format is [path str_time info, timestamp,...] - [text.txt Std Info Access Date, 2015-01-02 22:49:35.829651]
                 #From /Users/student/Documents/RecycleTestDocument.rtf store RecycleTestDocument.rtf
-                filename = filename[filename.rfind('/')+1:]
+                filename = filename.rsplit('/')[-1]
                 results[cnt].append(filename + ' ' + mftArray[0][j])
                 results[cnt].append(mftArray[i][j])
                 cnt += 1
 
     #Search in Recycle Bin if the file was deleted by looking in the times of the files in the RecycleBin
-    results, cnt = ruleSearchRecycleBin.searchRecycleBin(mftArray, results, cnt)
-
+    results, cnt = ruleSearchRecycleBin.searchRecycleBin(name, mftArray, results, cnt)
+    
+    fileSignature = name.rsplit('.')[-1]
+    possiblePrograms = filesignatures.returnPrograms(fileSignature)
+    
     #Search in user assist to find the programs used based on the file's timestamps
     for i in xrange(len(userAssist)):
         timestamp = userAssist[i][3]
+        print userAssist[i][4]
         for j in xrange(len(results)):
             try:
                 datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S.%f")
@@ -112,13 +119,17 @@ def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru, ntus
                 #It will hit the exception when it finds 1601-01-01 00:00:00
                 continue
             if checkTimestamps(timestamp, results[j][1]) == 1:
-                results.append([])
                 filename = userAssist[i][4]
                 #From {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Accessories\Wordpad.lnk store Wordpad.lnk
-                filename = filename[filename.rfind('\\')+1:]            
-                results[cnt].append(filename + ' UserAssist')                
-                results[cnt].append(userAssist[i][3])
-                cnt += 1
+                filename = filename.rsplit('\\')[-1]
+                
+                for program in possiblePrograms:
+                    if program in filename.lower():
+                        results.append([])
+                        results[cnt].append(filename + ' UserAssist')                
+                        results[cnt].append(userAssist[i][3])
+                        cnt += 1
+                        break
                 break
     
     #Try to find the program that opened the file
@@ -135,7 +146,7 @@ def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru, ntus
             results.append([])            
             filename = userAssist[i][4]
             #From {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Accessories\Wordpad.lnk store Wordpad.lnk
-            filename = filename[filename.rfind('\\')+1:]            
+            filename = filename.rsplit('\\')[-1]
             results[cnt].append(filename + ' UserAssist')                
             results[cnt].append(userAssist[i][3])
             cnt += 1
@@ -147,10 +158,10 @@ def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru, ntus
     key = r.open("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU")
     for subkey in key.subkeys():
         for value in subkey.values():
-            if name in value.value():
+            if searchName in value.value():
                 results.append([]) 
                 #Format is [RecycleTestDocument.rtf OpenSavePidlMRU rtf, 1601-01-01 00:00:00]
-                results[cnt].append(name + ' OpenSavePidlMRU ' + subkey.name())                
+                results[cnt].append(searchName + ' OpenSavePidlMRU ' + subkey.name())                
                 results[cnt].append(str(subkey.timestamp()))
                 cnt += 1
     f.close()
@@ -158,7 +169,7 @@ def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru, ntus
     #Search in the RunMRU file
     if runmru != []:
         for i in xrange(len(runmru)):
-            if name in runmru[i][4]:
+            if searchName in runmru[i][4]:
                 results.append([]) 
                 results[cnt].append(runmru[i][4] + ' RunMRU')
                 results[cnt].append(str(runmru[i][0]))

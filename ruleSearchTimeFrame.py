@@ -108,7 +108,8 @@ def searchTimeFrame(mintime, maxtime, mftArray, userAssist, recents, lastvisited
             #format is [Name, timestamp] - [text.txt, 2015-01-02 22:49:35.829651]
             filenamePath = userAssist[i][4]
             #From {7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}\\AccessData\\FTK Imager\\FTK Imager.exe store FTK Imager.exe
-            filename = filenamePath[filenamePath.rfind('\\')+1:]
+            filename = filenamePath.rsplit('\\')[-1]
+            #filename = filenamePath[filenamePath.rfind('\\')+1:]
             #Store results to array
             results[cnt].append(filename + ' UserAssist')
             results[cnt].append(userAssist[i][3])
