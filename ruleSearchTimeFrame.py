@@ -16,7 +16,7 @@ def insideTimeframe(timestamp, mintime, maxtime):
         return False
     
     #Compare times with given timeframe
-    if (time - mintime).total_seconds() > 0 and (maxtime - time).total_seconds() > 0 :
+    if (time - mintime).total_seconds() >= 0 and (maxtime - time).total_seconds() >= 0 :
         return 1
     return 0
         

@@ -111,7 +111,6 @@ def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru, ntus
     #Search in user assist to find the programs used based on the file's timestamps
     for i in xrange(len(userAssist)):
         timestamp = userAssist[i][3]
-        print userAssist[i][4]
         for j in xrange(len(results)):
             try:
                 datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S.%f")

@@ -65,6 +65,10 @@ def systemInfo():
             #Store to csv
             valArray = [value.name(), 'Year', year, 'Month', month, 'Day', day, 'Hour', hour, 'Day of the Week', dayOftheWeek]
             writeToCSV(valArray)
+        if value.name() == 'TimeZoneKeyName' or value.name() == 'Bias' or value.name() == 'ActiveTimeBias' or value.name() == 'DaylightBias' or value.name() == 'StandardBias':
+            #Store to csv
+            valArray = [value.name(), value.value()]
+            writeToCSV(valArray)
     
     f.close()
     try: 
