@@ -22,7 +22,7 @@ def options():
             maxtime = [int(x) for x in raw_input('Provide a maximum timestamp to check (format 2015 3 22 - YYYY MM DD) : ').split()]
         
         mintime = datetime.datetime(mintime[0], mintime[1], mintime[2])
-        maxtime = datetime.datetime(maxtime[0], maxtime[1], maxtime[2])
+        maxtime = datetime.datetime(maxtime[0], maxtime[1], maxtime[2], 23, 59, 59)
         
         if (maxtime - mintime).total_seconds() < 0 :
             print 'Error!! Minimum timestamp is bigger than maximum timestamp!!'
