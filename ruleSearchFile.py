@@ -105,6 +105,7 @@ def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru, ntus
     #Search in Recycle Bin if the file was deleted by looking in the times of the files in the RecycleBin
     results, cnt = ruleSearchRecycleBin.searchRecycleBin(name, mftArray, results, cnt)
     
+    #Find the files signature and look into the programs that open files with the specific file signature
     fileSignature = name.rsplit('.')[-1]
     possiblePrograms = filesignatures.returnPrograms(fileSignature)
     
@@ -121,7 +122,6 @@ def searchFile(name, mftArray, userAssist, recents, lastvisitedmru, runmru, ntus
                 filename = userAssist[i][4]
                 #From {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Accessories\Wordpad.lnk store Wordpad.lnk
                 filename = filename.rsplit('\\')[-1]
-                
                 for program in possiblePrograms:
                     if program in filename.lower():
                         results.append([])

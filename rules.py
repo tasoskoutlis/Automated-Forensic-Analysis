@@ -141,13 +141,7 @@ def main():
         ntuserPath = ruleOptionsArray[6]
         results = ruleSearchFile.searchFile(filename, mftArray, userAssist, recents, lastvisitedmru, runmru, ntuserPath)
         
-        #Search the Recycle Bin entries for information
-        #recycleBin = ruleSearchRecycleBin.searchRecycleBin(mftArray)
-    
-        #print recycleBin
-            
     print '[*] Finished rule parsing'
-           
     gephi.createGraph(results)
     print '[*] Finished Gephi file creation'
     
